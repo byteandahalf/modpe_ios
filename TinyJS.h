@@ -357,4 +357,7 @@ private:
     CScriptVarLink *findInParentClasses(CScriptVar *object, const std::string &name);
 };
 
+extern void registerFunctions(CTinyJS *tinyJS);
+extern void registerMathFunctions(CTinyJS *tinyJS);
+
 #endif
