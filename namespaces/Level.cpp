@@ -4,7 +4,7 @@
 #include "../mcpe/common.h"
 #include "../mcpe/Player.h"
 
-namespace Level
+namespace LevelNS
 {
 void setTile(CScriptVar* jsfunc, void*)
 {

@@ -9,7 +9,7 @@ Entity* modpe_entityWrapper(uint64_t uniqueID)
 	return Level$getEntity(MCPE_localplayer->level, uniqueID, false);
 }
 
-namespace Entity
+namespace EntityNS
 {
 void getVelX(CScriptVar* jsfunc, void*)
 {

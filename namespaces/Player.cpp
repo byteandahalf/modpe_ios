@@ -3,7 +3,7 @@
 #include "../externs.h"
 #include "../mcpe/Player.h"
 
-namespace Player
+namespace PlayerNS
 {
 void getEntity(CScriptVar* jsfunc, void*)
 {

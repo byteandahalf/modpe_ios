@@ -36,13 +36,13 @@ LocalPlayer* LocalPlayer$LocalPlayer(LocalPlayer*, uintptr_t*, uintptr_t*, uintp
 void print(CScriptVar*, void*);
 void preventDefault(CScriptVar*, void*);
 //Level
-namespace Level
+namespace LevelNS
 {
 	void setTile(CScriptVar*, void*);
 	void getTile(CScriptVar*, void*);
 	void getData(CScriptVar*, void*);
 };
-namespace Entity
+namespace EntityNS
 {
 	void getVelX(CScriptVar*, void*);
 	void getVelY(CScriptVar*, void*);
@@ -53,7 +53,7 @@ namespace Entity
 	void setPosition(CScriptVar*, void*);
 	void setPositionRelative(CScriptVar*, void*);
 };
-namespace Player
+namespace PlayerNS
 {
 	void getEntity(CScriptVar*, void*);
 };
@@ -104,20 +104,20 @@ void registerScriptCalls()
 	interpreter->addNative("function print(text)", print, interpreter);
 	interpreter->addNative("function preventDefault()", preventDefault, interpreter);
 
-	interpreter->addNative("function Level.setTile(x, y, z, blockId, data)", Level::setTile, interpreter);
-	interpreter->addNative("function Level.getTile(x, y, z)", Level::getTile, interpreter);
-	interpreter->addNative("function Level.getData(x, y, z)", Level::getData, interpreter);
+	interpreter->addNative("function Level.setTile(x, y, z, blockId, data)", LevelNS::setTile, interpreter);
+	interpreter->addNative("function Level.getTile(x, y, z)", LevelNS::getTile, interpreter);
+	interpreter->addNative("function Level.getData(x, y, z)", LevelNS::getData, interpreter);
 
-	interpreter->addNative("function Entity.getPosX(uniqueID)", Entity::getPosX, interpreter);
-	interpreter->addNative("function Entity.getPosY(uniqueID)", Entity::getPosY, interpreter);
-	interpreter->addNative("function Entity.getPosZ(uniqueID)", Entity::getPosZ, interpreter);
-	interpreter->addNative("function Entity.setPosition(uniqueID)", Entity::setPosition, interpreter);
-	interpreter->addNative("function Entity.setPositionRelative(uniqueID)", Entity::setPositionRelative, interpreter);
-	interpreter->addNative("function Entity.getVelX(uniqueID)", Entity::getVelX, interpreter);
-	interpreter->addNative("function Entity.getVelY(uniqueID)", Entity::getVelY, interpreter);
-	interpreter->addNative("function Entity.getVelZ(uniqueID)", Entity::getVelZ, interpreter);
+	interpreter->addNative("function Entity.getPosX(uniqueID)", EntityNS::getPosX, interpreter);
+	interpreter->addNative("function Entity.getPosY(uniqueID)", EntityNS::getPosY, interpreter);
+	interpreter->addNative("function Entity.getPosZ(uniqueID)", EntityNS::getPosZ, interpreter);
+	interpreter->addNative("function Entity.setPosition(uniqueID)", EntityNS::setPosition, interpreter);
+	interpreter->addNative("function Entity.setPositionRelative(uniqueID)", EntityNS::setPositionRelative, interpreter);
+	interpreter->addNative("function Entity.getVelX(uniqueID)", EntityNS::getVelX, interpreter);
+	interpreter->addNative("function Entity.getVelY(uniqueID)", EntityNS::getVelY, interpreter);
+	interpreter->addNative("function Entity.getVelZ(uniqueID)", EntityNS::getVelZ, interpreter);
 
-	interpreter->addNative("function Player.getEntity()", Player::getEntity, interpreter);
+	interpreter->addNative("function Player.getEntity()", PlayerNS::getEntity, interpreter);
 }
 
 void VirtualHook(uintptr_t** vtable, short offset, void* hook, void** real);
