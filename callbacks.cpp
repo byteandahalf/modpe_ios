@@ -11,7 +11,8 @@ struct ItemInstance;
 #include "TinyJS.h"
 
 
-std::string tostr(uint64_t);
+std::string tostr(int);
+std::string tostr64(uint64_t);
 
 bool (*_CreativeMode$useItemOn)(uintptr_t*, uintptr_t*, ItemInstance&, const BlockPos&, signed char, uintptr_t*);
 bool CreativeMode$useItemOn(uintptr_t* self, uintptr_t* player, ItemInstance& itemStack, const BlockPos& pos, signed char side, uintptr_t* vec)
@@ -52,7 +53,7 @@ bool SurvivalMode$useItemOn(uintptr_t* self, uintptr_t* player, ItemInstance& it
 void (*_GameMode$attack)(uintptr_t*, Player*, Entity*);
 void GameMode$attack(uintptr_t* self, Player* attacker, Entity* victim)
 {
-	interpreter->execute("attackHook("+tostr(Entity$getUniqueID(attacker))+","+tostr(Entity$getUniqueID(victim))+");");
+	interpreter->execute("attackHook("+tostr64(Entity$getUniqueID(attacker))+","+tostr64(Entity$getUniqueID(victim))+");");
 
 	if(PREVENTDEFAULT)
 	{

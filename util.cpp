@@ -2,7 +2,15 @@
 #include <sstream>
 #include <stdint.h>
 
-std::string tostr(uint64_t num)
+std::string tostr(int num)
+{
+    std::stringstream ss;
+    ss << num;
+
+    return ss.str();
+}
+
+std::string tostr64(uint64_t num)
 {
     std::stringstream ss;
     ss << num;
