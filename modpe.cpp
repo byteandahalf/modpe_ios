@@ -80,16 +80,17 @@ void registerScriptCalls()
 	interpreter->addNative("function preventDefault()", preventDefault, interpreter);
 }
 
+void VirtualHook(uintptr_t** vtable, short offset, void* hook, void** real);
+
 void initPointers()
 {
 	// currently only arm64 support
 	FLHookSymbol(BlockSource$setBlockAndData, 0x1005CE8FC);
+
 	FLHookSymbol(CreativeMode$vtable, 0x100EEA030);
 	FLHookSymbol(SurvivalMode$vtable, 0x100E72E10);
-	_CreativeMode$useItemOn = (bool (*)(uintptr_t*, uintptr_t*, ItemInstance&, const BlockPos&, signed char, uintptr_t*)) CreativeMode$vtable[GAMEMODE_USEITEMON_OFFSET];
-	CreativeMode$vtable[GAMEMODE_USEITEMON_OFFSET] = (uintptr_t*) CreativeMode$useItemOn;
-	_SurvivalMode$useItemOn = (bool (*)(uintptr_t*, uintptr_t*, ItemInstance&, const BlockPos&, signed char, uintptr_t*)) SurvivalMode$vtable[GAMEMODE_USEITEMON_OFFSET];
-	SurvivalMode$vtable[GAMEMODE_USEITEMON_OFFSET] = (uintptr_t*) SurvivalMode$useItemOn;
+	VirtualHook(CreativeMode$vtable, GAMEMODE_USEITEMON_OFFSET, (void*) &CreativeMode$useItemOn, (void**) &_CreativeMode$useItemOn);
+	VirtualHook(SurvivalMode$vtable, GAMEMODE_USEITEMON_OFFSET, (void*) &SurvivalMode$useItemOn, (void**) &_SurvivalMode$useItemOn);
 
 	FLHookFunction(0x1005CC208, (void*) &BlockSource$BlockSource, (void**) &_BlockSource$BlockSource);
 }
