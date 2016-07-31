@@ -34,9 +34,14 @@ LocalPlayer* LocalPlayer$LocalPlayer(LocalPlayer*, uintptr_t*, uintptr_t*, uintp
 */
 //top-level
 void print(CScriptVar*, void*);
-void setTile(CScriptVar*, void*);
-void getTile(CScriptVar*, void*);
 void preventDefault(CScriptVar*, void*);
+//Level
+namespace Level
+{
+	void setTile(CScriptVar*, void*);
+	void getTile(CScriptVar*, void*);
+	void getData(CScriptVar*, void*);
+};
 
 
 void runTestScript()
@@ -82,9 +87,11 @@ void runTestScript()
 void registerScriptCalls()
 {
 	interpreter->addNative("function print(text)", print, interpreter);
-	interpreter->addNative("function setTile(x, y, z, blockId, data)", setTile, interpreter);
-	interpreter->addNative("function getTile(x, y, z)", getTile, interpreter);
 	interpreter->addNative("function preventDefault()", preventDefault, interpreter);
+
+	interpreter->addNative("function Level.setTile(x, y, z, blockId, data)", Level::setTile, interpreter);
+	interpreter->addNative("function Level.getTile(x, y, z)", Level::getTile, interpreter);
+	interpreter->addNative("function Level.getData(x, y, z)", Level::getData, interpreter);
 }
 
 void VirtualHook(uintptr_t** vtable, short offset, void* hook, void** real);
