@@ -2,6 +2,7 @@ struct CTinyJS;
 struct BlockSource;
 struct LocalPlayer;
 struct FullBlock;
+struct BlockPos;
 
 //the JavaScript interpreter
 CTinyJS* interpreter;
@@ -16,3 +17,4 @@ uintptr_t** SurvivalMode$vtable;
 
 //function pointers
 bool (*BlockSource$setBlockAndData)(BlockSource*, int, int, int, FullBlock, int);
+FullBlock (*BlockSource$getBlockAndData)(BlockSource*, const BlockPos&);

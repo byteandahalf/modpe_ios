@@ -30,6 +30,7 @@ LocalPlayer* LocalPlayer$LocalPlayer(LocalPlayer*, uintptr_t*, uintptr_t*, uintp
 //top-level
 void print(CScriptVar*, void*);
 void setTile(CScriptVar*, void*);
+void getTile(CScriptVar*, void*);
 void preventDefault(CScriptVar*, void*);
 
 
@@ -77,6 +78,7 @@ void registerScriptCalls()
 {
 	interpreter->addNative("function print(text)", print, interpreter);
 	interpreter->addNative("function setTile(x, y, z, blockId, data)", setTile, interpreter);
+	interpreter->addNative("function getTile(x, y, z)", getTile, interpreter);
 	interpreter->addNative("function preventDefault()", preventDefault, interpreter);
 }
 
@@ -86,6 +88,7 @@ void initPointers()
 {
 	// currently only arm64 support
 	FLHookSymbol(BlockSource$setBlockAndData, 0x1005CE8FC);
+	FLHookSymbol(BlockSource$getBlockAndData, 0x1005CD0C0);
 
 	FLHookSymbol(CreativeMode$vtable, 0x100EEA030);
 	FLHookSymbol(SurvivalMode$vtable, 0x100E72E10);
