@@ -1,8 +1,7 @@
 #ifndef __GLOBALS_H
 #define __GLOBALS_H
 
-#include "TinyJS.h"
-
+struct CTinyJS;
 struct BlockSource;
 struct FullBlock;
 

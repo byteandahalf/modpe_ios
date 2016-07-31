@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __MCPE_COMMON_H
+#define __MCPE_COMMON_H
 
 #include <stdint.h>
 
@@ -55,7 +56,11 @@ struct FullBlock
 {
 	BlockID blockId;
 	DataID data;
-
-	FullBlock(BlockID id, DataID data)
-	: blockId(id), data(data) {}
 };
+
+struct BlockPos
+{
+	int x, y, z;
+};
+
+#endif

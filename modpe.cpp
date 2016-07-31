@@ -4,6 +4,8 @@
 
 #include <Forklift/Forklift.h>
 
+#include "TinyJS.h"
+
 //constants
 #define GAMEMODE_USEITEMON_OFFSET 13
 
@@ -13,16 +15,8 @@ struct ItemInstance;
 struct BlockPos;
 struct FullBlock;
 
-//the JavaScript interpreter
-CTinyJS* interpreter;
-//various helpers
-bool PREVENTDEFAULT = false;
-//pointers
-BlockSource* MCPE_region;
-uintptr_t** CreativeMode$vtable;
-uintptr_t** SurvivalMode$vtable;
-//function pointers
-bool (*BlockSource$setBlockAndData)(BlockSource*, int, int, int, FullBlock, int);
+#include "externs.h" // for function pointers
+
 //callback prototypes
 extern bool (*_CreativeMode$useItemOn)(uintptr_t*, uintptr_t*, ItemInstance&, const BlockPos&, signed char, uintptr_t*);
 bool CreativeMode$useItemOn(uintptr_t*, uintptr_t*, ItemInstance&, const BlockPos&, signed char, uintptr_t*);
@@ -82,7 +76,7 @@ void runTestScript()
 void registerScriptCalls()
 {
 	interpreter->addNative("function print(text)", print, interpreter);
-	interpreter->addNative("function setTile(x, y, z, blockId, meta)", setTile, interpreter);
+	interpreter->addNative("function setTile(x, y, z, blockId, data)", setTile, interpreter);
 	interpreter->addNative("function preventDefault()", preventDefault, interpreter);
 }
 

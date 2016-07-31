@@ -1,13 +1,12 @@
 #include <string>
 #include <cstdio>
-#include <CydiaSubstrate/CydiaSubstrate.h>
 
-#include "globals.h"
+#include "externs.h"
 
-#include "mcpe/common.h"
-#include "mcpe/BlockPos.h"
 struct BlockSource;
 struct ItemInstance;
+#include "mcpe/common.h"
+#include "mcpe/BlockPos.h"
 
 
 std::string tostr(int);
