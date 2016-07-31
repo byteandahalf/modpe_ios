@@ -1,10 +1,11 @@
-#include <stdlib.h>
+#include <stdint.h>
 
 struct CTinyJS;
 struct BlockSource;
 struct LocalPlayer;
 struct FullBlock;
 struct BlockPos;
+struct Entity;
 
 //the JavaScript interpreter
 CTinyJS* interpreter;
@@ -20,3 +21,4 @@ uintptr_t** SurvivalMode$vtable;
 //function pointers
 bool (*BlockSource$setBlockAndData)(BlockSource*, int, int, int, FullBlock, int);
 FullBlock (*BlockSource$getBlockAndData)(BlockSource*, const BlockPos&);
+uint64_t (*Entity$getUniqueID)(Entity*);

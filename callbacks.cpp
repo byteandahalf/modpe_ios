@@ -6,11 +6,12 @@
 struct LocalPlayer;
 struct ItemInstance;
 #include "mcpe/common.h"
+#include "mcpe/Player.h"
 
 #include "TinyJS.h"
 
 
-std::string tostr(int);
+std::string tostr(uint64_t);
 
 bool (*_CreativeMode$useItemOn)(uintptr_t*, uintptr_t*, ItemInstance&, const BlockPos&, signed char, uintptr_t*);
 bool CreativeMode$useItemOn(uintptr_t* self, uintptr_t* player, ItemInstance& itemStack, const BlockPos& pos, signed char side, uintptr_t* vec)
@@ -46,6 +47,20 @@ bool SurvivalMode$useItemOn(uintptr_t* self, uintptr_t* player, ItemInstance& it
 	}
 
 	return _SurvivalMode$useItemOn(self, player, itemStack, pos, side, vec);
+}
+
+void (*_GameMode$attack)(uintptr_t*, Player*, Entity*);
+void GameMode$attack(uintptr_t* self, Player* attacker, Entity* victim)
+{
+	interpreter->execute("attackHook("+tostr(Entity$getUniqueID(attacker))+","+tostr(Entity$getUniqueID(victim))+");");
+
+	if(PREVENTDEFAULT)
+	{
+		PREVENTDEFAULT = false;
+		return;
+	}
+
+	_GameMode$attack(self, attacker, victim);
 }
 
 LocalPlayer* (*_LocalPlayer$LocalPlayer)(LocalPlayer*, uintptr_t*, uintptr_t*, uintptr_t*, int, uintptr_t*, uintptr_t*);

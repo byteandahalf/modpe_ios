@@ -1,7 +1,8 @@
 #include <string>
 #include <sstream>
+#include <stdint.h>
 
-std::string tostr(int num)
+std::string tostr(uint64_t num)
 {
     std::stringstream ss;
     ss << num;

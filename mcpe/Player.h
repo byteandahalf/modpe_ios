@@ -1,12 +1,14 @@
 #ifndef __MCPE_LOCALPLAYER_H
 #define __MCPE_LOCALPLAYER_H
 
-struct BlockSource;
+#include "Entity.h"
+
+struct Player
+:public Entity
+{};
 
 struct LocalPlayer
-{
-	char filler[496];
-	BlockSource* region;
-};
+:public Player
+{};
 
 #endif

@@ -8,12 +8,15 @@
 
 //constants
 #define GAMEMODE_USEITEMON_OFFSET 13
+#define GAMEMODE_ATTACK_OFFSET 15
 
 //forward decs for prototypes
 struct LocalPlayer;
 struct ItemInstance;
 struct BlockPos;
 struct FullBlock;
+struct Player;
+struct Entity;
 
 #include "externs.h" // for function pointers
 
@@ -22,6 +25,8 @@ extern bool (*_CreativeMode$useItemOn)(uintptr_t*, uintptr_t*, ItemInstance&, co
 bool CreativeMode$useItemOn(uintptr_t*, uintptr_t*, ItemInstance&, const BlockPos&, signed char, uintptr_t*);
 extern bool (*_SurvivalMode$useItemOn)(uintptr_t*, uintptr_t*, ItemInstance&, const BlockPos&, signed char, uintptr_t*);
 bool SurvivalMode$useItemOn(uintptr_t*, uintptr_t*, ItemInstance&, const BlockPos&, signed char, uintptr_t*);
+extern void (*_GameMode$attack)(uintptr_t*, Player*, Entity*);
+void GameMode$attack(uintptr_t*, Player*, Entity*);
 extern LocalPlayer* (*_LocalPlayer$LocalPlayer)(LocalPlayer*, uintptr_t*, uintptr_t*, uintptr_t*, int, uintptr_t*, uintptr_t*);
 LocalPlayer* LocalPlayer$LocalPlayer(LocalPlayer*, uintptr_t*, uintptr_t*, uintptr_t*, int, uintptr_t*, uintptr_t*);
 /*
@@ -89,11 +94,14 @@ void initPointers()
 	// currently only arm64 support
 	FLHookSymbol(BlockSource$setBlockAndData, 0x1005CE8FC);
 	FLHookSymbol(BlockSource$getBlockAndData, 0x1005CD0C0);
+	FLHookSymbol(Entity$getUniqueID, 0x1004D347C);
 
 	FLHookSymbol(CreativeMode$vtable, 0x100EEA030);
 	FLHookSymbol(SurvivalMode$vtable, 0x100E72E10);
 	VirtualHook(CreativeMode$vtable, GAMEMODE_USEITEMON_OFFSET, (void*) &CreativeMode$useItemOn, (void**) &_CreativeMode$useItemOn);
 	VirtualHook(SurvivalMode$vtable, GAMEMODE_USEITEMON_OFFSET, (void*) &SurvivalMode$useItemOn, (void**) &_SurvivalMode$useItemOn);
+	VirtualHook(CreativeMode$vtable, GAMEMODE_ATTACK_OFFSET, (void*) &GameMode$attack, (void**) &_GameMode$attack);
+	VirtualHook(SurvivalMode$vtable, GAMEMODE_ATTACK_OFFSET, (void*) &GameMode$attack, (void**) &_GameMode$attack);
 
 	FLHookFunction(0x1002C47E8, (void*) &LocalPlayer$LocalPlayer, (void**) &_LocalPlayer$LocalPlayer);
 }

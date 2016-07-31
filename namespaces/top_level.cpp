@@ -4,7 +4,7 @@
 
 #include "../externs.h"
 #include "../mcpe/common.h"
-#include "../mcpe/LocalPlayer.h"
+#include "../mcpe/Player.h"
 
 void print(CScriptVar* jsfunc, void*)
 {
