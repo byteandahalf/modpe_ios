@@ -10,7 +10,7 @@
 #define GAMEMODE_USEITEMON_OFFSET 13
 
 //forward decs for prototypes
-struct BlockSource;
+struct LocalPlayer;
 struct ItemInstance;
 struct BlockPos;
 struct FullBlock;
@@ -22,8 +22,8 @@ extern bool (*_CreativeMode$useItemOn)(uintptr_t*, uintptr_t*, ItemInstance&, co
 bool CreativeMode$useItemOn(uintptr_t*, uintptr_t*, ItemInstance&, const BlockPos&, signed char, uintptr_t*);
 extern bool (*_SurvivalMode$useItemOn)(uintptr_t*, uintptr_t*, ItemInstance&, const BlockPos&, signed char, uintptr_t*);
 bool SurvivalMode$useItemOn(uintptr_t*, uintptr_t*, ItemInstance&, const BlockPos&, signed char, uintptr_t*);
-extern BlockSource* (*_BlockSource$BlockSource)(BlockSource*, uintptr_t*, uintptr_t*, uintptr_t*, bool, bool);
-BlockSource* BlockSource$BlockSource(BlockSource*, uintptr_t*, uintptr_t*, uintptr_t*, bool, bool);
+extern LocalPlayer* (*LocalPlayer$LocalPlayer)(LocalPlayer*, uintptr_t*, uintptr_t*, uintptr_t*, int, uintptr_t*, uintptr_t*);
+LocalPlayer* LocalPlayer$LocalPlayer(LocalPlayer*, uintptr_t*, uintptr_t*, uintptr_t*, int, uintptr_t*, uintptr_t*);
 /*
 *	ModPE calls
 */
@@ -92,7 +92,7 @@ void initPointers()
 	VirtualHook(CreativeMode$vtable, GAMEMODE_USEITEMON_OFFSET, (void*) &CreativeMode$useItemOn, (void**) &_CreativeMode$useItemOn);
 	VirtualHook(SurvivalMode$vtable, GAMEMODE_USEITEMON_OFFSET, (void*) &SurvivalMode$useItemOn, (void**) &_SurvivalMode$useItemOn);
 
-	FLHookFunction(0x1005CC208, (void*) &BlockSource$BlockSource, (void**) &_BlockSource$BlockSource);
+	FLHookFunction(0x1002C47E8, (void*) &LocalPlayer$LocalPlayer, (void**) &_LocalPlayer$LocalPlayer);
 }
 
 void initInterpreter()

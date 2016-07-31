@@ -1,5 +1,6 @@
 struct CTinyJS;
 struct BlockSource;
+struct LocalPlayer;
 struct FullBlock;
 
 //the JavaScript interpreter
@@ -9,7 +10,7 @@ CTinyJS* interpreter;
 bool PREVENTDEFAULT = false;
 
 //pointers
-BlockSource* MCPE_region;
+LocalPlayer* MCPE_localplayer;
 uintptr_t** CreativeMode$vtable;
 uintptr_t** SurvivalMode$vtable;
 

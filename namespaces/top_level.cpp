@@ -2,6 +2,7 @@
 
 #include "../externs.h"
 #include "../mcpe/common.h"
+#include "../mcpe/LocalPlayer.h"
 
 void print(CScriptVar* jsfunc, void*)
 {
@@ -17,7 +18,7 @@ void setTile(CScriptVar* jsfunc, void*)
 	uint8_t blockId = jsfunc->getParameter("blockId")->getInt(),
 		data = jsfunc->getParameter("data")->getInt();
 
-	BlockSource$setBlockAndData(MCPE_region, x, y, z, FullBlock{blockId, data}, 2);
+	BlockSource$setBlockAndData(MCPE_localplayer->region, x, y, z, FullBlock{blockId, data}, 2);
 }
 
 void preventDefault(CScriptVar* jsfunc, void*)

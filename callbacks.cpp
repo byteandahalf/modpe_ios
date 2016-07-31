@@ -3,10 +3,9 @@
 
 #include "externs.h"
 
-struct BlockSource;
+struct LocalPlayer;
 struct ItemInstance;
 #include "mcpe/common.h"
-#include "mcpe/BlockPos.h"
 
 
 std::string tostr(int);
@@ -47,9 +46,9 @@ bool SurvivalMode$useItemOn(uintptr_t* self, uintptr_t* player, ItemInstance& it
 	return _SurvivalMode$useItemOn(self, player, itemStack, pos, side, vec);
 }
 
-BlockSource* (*_BlockSource$BlockSource)(BlockSource*, uintptr_t*, uintptr_t*, uintptr_t*, bool, bool);
-BlockSource* BlockSource$BlockSource(BlockSource* self, uintptr_t* level, uintptr_t* dimension, uintptr_t* chunkSource, bool a, bool b)
+LocalPlayer* (*_LocalPlayer$LocalPlayer)(LocalPlayer*, uintptr_t*, uintptr_t*, uintptr_t*, int, uintptr_t*, uintptr_t*);
+LocalPlayer* LocalPlayer$LocalPlayer(LocalPlayer* self, uintptr_t* minecraft, uintptr_t* level, uintptr_t* user, int gamemode, uintptr_t* raknetGUID, uintptr_t* mceUUID)
 {
-	MCPE_region = self;
-	return _BlockSource$BlockSource(self, level, dimension, chunkSource, a, b);
+	MCPE_localplayer = self;
+	return _LocalPlayer$LocalPlayer(self, minecraft, level, user, gamemode, raknetGUID, mceUUID);
 }
