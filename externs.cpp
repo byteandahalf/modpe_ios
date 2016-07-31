@@ -6,6 +6,7 @@ struct LocalPlayer;
 struct FullBlock;
 struct BlockPos;
 struct Entity;
+struct Level;
 
 //the JavaScript interpreter
 CTinyJS* interpreter;
@@ -22,3 +23,4 @@ uintptr_t** SurvivalMode$vtable;
 bool (*BlockSource$setBlockAndData)(BlockSource*, int, int, int, FullBlock, int);
 FullBlock (*BlockSource$getBlockAndData)(BlockSource*, const BlockPos&);
 uint64_t (*Entity$getUniqueID)(Entity*);
+Entity* (*Level$getEntity)(Level*, uint64_t, bool);

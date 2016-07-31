@@ -42,6 +42,21 @@ namespace Level
 	void getTile(CScriptVar*, void*);
 	void getData(CScriptVar*, void*);
 };
+namespace Entity
+{
+	void getVelX(CScriptVar*, void*);
+	void getVelY(CScriptVar*, void*);
+	void getVelZ(CScriptVar*, void*);
+	void getPosX(CScriptVar*, void*);
+	void getPosY(CScriptVar*, void*);
+	void getPosZ(CScriptVar*, void*);
+	void setPosition(CScriptVar*, void*);
+	void setPositionRelative(CScriptVar*, void*);
+};
+namespace Player
+{
+	void getEntity(CScriptVar*, void*);
+};
 
 
 void runTestScript()
@@ -92,6 +107,17 @@ void registerScriptCalls()
 	interpreter->addNative("function Level.setTile(x, y, z, blockId, data)", Level::setTile, interpreter);
 	interpreter->addNative("function Level.getTile(x, y, z)", Level::getTile, interpreter);
 	interpreter->addNative("function Level.getData(x, y, z)", Level::getData, interpreter);
+
+	interpreter->addNative("function Entity.getPosX(uniqueID)", Entity::getPosX, interpreter);
+	interpreter->addNative("function Entity.getPosY(uniqueID)", Entity::getPosY, interpreter);
+	interpreter->addNative("function Entity.getPosZ(uniqueID)", Entity::getPosZ, interpreter);
+	interpreter->addNative("function Entity.setPosition(uniqueID)", Entity::setPosition, interpreter);
+	interpreter->addNative("function Entity.setPositionRelative(uniqueID)", Entity::setPositionRelative, interpreter);
+	interpreter->addNative("function Entity.getVelX(uniqueID)", Entity::getVelX, interpreter);
+	interpreter->addNative("function Entity.getVelY(uniqueID)", Entity::getVelY, interpreter);
+	interpreter->addNative("function Entity.getVelZ(uniqueID)", Entity::getVelZ, interpreter);
+
+	interpreter->addNative("function Player.getEntity()", Player::getEntity, interpreter);
 }
 
 void VirtualHook(uintptr_t** vtable, short offset, void* hook, void** real);
@@ -102,6 +128,7 @@ void initPointers()
 	FLHookSymbol(BlockSource$setBlockAndData, 0x1005CE8FC);
 	FLHookSymbol(BlockSource$getBlockAndData, 0x1005CD0C0);
 	FLHookSymbol(Entity$getUniqueID, 0x1004D347C);
+	FLHookSymbol(Level$getEntity, 0x1005DA0B4);
 
 	FLHookSymbol(CreativeMode$vtable, 0x100EEA030);
 	FLHookSymbol(SurvivalMode$vtable, 0x100E72E10);

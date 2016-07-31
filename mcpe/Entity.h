@@ -5,8 +5,10 @@ struct BlockSource;
 
 struct Entity
 {
-	char filler[496];
-	BlockSource* region;
+	char filler[144];
+	Level* level; // 144
+	char filler[344]; // 152
+	BlockSource* region; // 496
 };
 
 #endif
