@@ -7,7 +7,7 @@ struct Entity
 {
 	char filler[144];
 	Level* level; // 144
-	char filler[344]; // 152
+	char filler2[344]; // 152
 	BlockSource* region; // 496
 };
 

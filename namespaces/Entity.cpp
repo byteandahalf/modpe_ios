@@ -75,7 +75,7 @@ void setPosition(CScriptVar* jsfunc, void*)
 	uintptr_t** vtable = *((uintptr_t***) entity);
 	void (*setPos)(Entity*, const Vec3&) = (void (*)(Entity*, const Vec3&)) vtable[6];
 
-	int x = jsfunc->getParameter("x")->getDouble(),
+	float x = jsfunc->getParameter("x")->getDouble(),
 		y = jsfunc->getParameter("y")->getDouble(),
 		z = jsfunc->getParameter("z")->getDouble();
 
@@ -89,7 +89,7 @@ void setPositionRelative(CScriptVar* jsfunc, void*)
 	void (*setPos)(Entity*, const Vec3&) = (void (*)(Entity*, const Vec3&)) vtable[6];
 	const Vec3& (*getPos)(Entity*) = (const Vec3& (*)(Entity*)) vtable[7];
 
-	int x = jsfunc->getParameter("x")->getDouble() + getPos(entity).x,
+	float x = jsfunc->getParameter("x")->getDouble() + getPos(entity).x,
 		y = jsfunc->getParameter("y")->getDouble() + getPos(entity).y,
 		z = jsfunc->getParameter("z")->getDouble() + getPos(entity).z;
 
