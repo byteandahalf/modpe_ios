@@ -22,7 +22,7 @@ extern bool (*_CreativeMode$useItemOn)(uintptr_t*, uintptr_t*, ItemInstance&, co
 bool CreativeMode$useItemOn(uintptr_t*, uintptr_t*, ItemInstance&, const BlockPos&, signed char, uintptr_t*);
 extern bool (*_SurvivalMode$useItemOn)(uintptr_t*, uintptr_t*, ItemInstance&, const BlockPos&, signed char, uintptr_t*);
 bool SurvivalMode$useItemOn(uintptr_t*, uintptr_t*, ItemInstance&, const BlockPos&, signed char, uintptr_t*);
-extern LocalPlayer* (*LocalPlayer$LocalPlayer)(LocalPlayer*, uintptr_t*, uintptr_t*, uintptr_t*, int, uintptr_t*, uintptr_t*);
+extern LocalPlayer* (*_LocalPlayer$LocalPlayer)(LocalPlayer*, uintptr_t*, uintptr_t*, uintptr_t*, int, uintptr_t*, uintptr_t*);
 LocalPlayer* LocalPlayer$LocalPlayer(LocalPlayer*, uintptr_t*, uintptr_t*, uintptr_t*, int, uintptr_t*, uintptr_t*);
 /*
 *	ModPE calls

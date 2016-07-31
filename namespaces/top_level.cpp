@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "TinyJS.h"
+#include "../TinyJS.h"
 
 #include "../externs.h"
 #include "../mcpe/common.h"

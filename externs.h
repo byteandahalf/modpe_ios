@@ -1,6 +1,8 @@
 #ifndef __GLOBALS_H
 #define __GLOBALS_H
 
+#include <stdlib.h>
+
 struct CTinyJS;
 struct BlockSource;
 struct LocalPlayer;

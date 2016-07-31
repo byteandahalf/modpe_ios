@@ -7,6 +7,8 @@ struct LocalPlayer;
 struct ItemInstance;
 #include "mcpe/common.h"
 
+#include "TinyJS.h"
+
 
 std::string tostr(int);
 

@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 struct CTinyJS;
 struct BlockSource;
 struct LocalPlayer;

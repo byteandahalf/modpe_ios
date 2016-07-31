@@ -6,8 +6,8 @@ PROCESS := minecraftpe
 
 # Build using libc++ and C++11 support
 # Unfortunately these build parameters are set up just for me :(
-override CXXFLAGS += -stdlib=libstdc++ -std=c++11 -miphoneos-version-min=5.0 -isysroot /iPhoneOS9.1.sdk
-override LDFLAGS += -stdlib=libstdc++ -lc++ -lsubstrate -isysroot /iPhoneOS9.1.sdk
+override CXXFLAGS += -stdlib=libstdc++ -std=c++11 -miphoneos-version-min=5.0 -isysroot /iPhoneOS.sdk
+override LDFLAGS += -stdlib=libstdc++ -lc++ -isysroot /iPhoneOS.sdk
 
 
 # Names of the tweak library, substrate filter, and debian package
