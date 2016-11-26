@@ -1,0 +1,9 @@
+Package: com.byteandahalf.modpe
+Name: ModPE
+Depends: mobilesubstrate
+Version: 1.0
+Architecture: iphoneos-arm
+Description: Make Minecraft PE mods in JavaScript! Originally by Carter Feldman.
+Maintainer: Ryan Terry
+Author: Ryan Terry
+Section: Tweaks

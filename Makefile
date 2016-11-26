@@ -4,10 +4,16 @@ PROJECT := modpe
 # Name of process the tweak is loaded into
 PROCESS := minecraftpe
 
+# Local IP Address of device to SSH into
+DEVICE := ryans-ipod-touch.local
+
+# Path of the SDK on MacOS
+SDKPATH := /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk
+
 # Build using libc++ and C++11 support
 # Unfortunately these build parameters are set up just for me :(
-override CXXFLAGS += -stdlib=libstdc++ -std=c++11 -miphoneos-version-min=5.0 -isysroot /iPhoneOS.sdk
-override LDFLAGS += -stdlib=libstdc++ -lc++ -isysroot /iPhoneOS.sdk
+override CXXFLAGS += -stdlib=libc++ -std=c++11 -miphoneos-version-min=7.0 -isysroot $(SDKPATH)
+override LDFLAGS += -stdlib=libc++ -std=c++11 -miphoneos-version-min=7.0 -isysroot $(SDKPATH)
 
 
 # Names of the tweak library, substrate filter, and debian package
@@ -91,7 +97,7 @@ $(DEB): $(TWEAK) $(FILTER)
 	$(_v)chmod 0755 $(SUBSTRATE)/$(TWEAK)
 	$(_v)chmod 0644 $(SUBSTRATE)/$(FILTER)
 	@echo 'Package $@'
-	$(_v)dpkg-deb -b $(STAGING) $@
+	$(_v)dpkg-deb -Zgzip -b $(STAGING) $@
 	$(_v)rm -rf $(STAGING)
 
 
@@ -99,9 +105,9 @@ $(DEB): $(TWEAK) $(FILTER)
 
 install: $(DEB)
 	@echo 'Install $(DEB)'
-	$(_v)dpkg -i $<
-	@echo 'Kill $(PROCESS)'
-	$(_v)killall -KILL $(PROCESS)
+	scp $(DEB) root@$(DEVICE):/var/tmp/
+	@echo ‘Run dpkg -i /var/tmp/$(DEB) to install.’
+	ssh root@$(DEVICE)
 
 .PHONY: install
 
@@ -119,3 +125,9 @@ clean:
 %/.dir:
 	@echo 'Create directory $*/'
 	$(_v)mkdir -p $* && touch $@
+
+# deploys test script
+deploy:
+	scp scripts/script.js root@$(DEVICE):/var/mobile/modpe/
+
+.PHONY: deploy

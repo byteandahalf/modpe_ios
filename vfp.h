@@ -1,3 +1,6 @@
+/*
+*** 32-bit (armv7, armv7s) calling convention fix
+*/
 #ifndef AAPCS_VFP
 # if __arm__
 #  define AAPCS_VFP __attribute__((pcs("aapcs-vfp")))

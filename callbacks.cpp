@@ -1,14 +1,15 @@
 #include <string>
 #include <cstdio>
 
+#include "TinyJS.h"
+
 #include "externs.h"
 
-struct LocalPlayer;
 struct ItemInstance;
-#include "mcpe/common.h"
-#include "mcpe/Player.h"
+struct MinecraftClient;
+#include "minecraftpe/common.h"
+#include "minecraftpe/Player.h"
 
-#include "TinyJS.h"
 
 
 std::string tostr(int);
@@ -53,7 +54,7 @@ bool SurvivalMode$useItemOn(uintptr_t* self, uintptr_t* player, ItemInstance& it
 void (*_GameMode$attack)(uintptr_t*, Player*, Entity*);
 void GameMode$attack(uintptr_t* self, Player* attacker, Entity* victim)
 {
-	interpreter->execute("attackHook("+tostr64(Entity$getUniqueID(attacker))+","+tostr64(Entity$getUniqueID(victim))+");");
+	interpreter->execute("attackHook(0, 0)");//+tostr64(Entity$getUniqueID(attacker))+","+tostr64(Entity$getUniqueID(victim))+");");
 
 	if(PREVENTDEFAULT)
 	{
@@ -64,9 +65,10 @@ void GameMode$attack(uintptr_t* self, Player* attacker, Entity* victim)
 	_GameMode$attack(self, attacker, victim);
 }
 
-LocalPlayer* (*_LocalPlayer$LocalPlayer)(LocalPlayer*, uintptr_t*, uintptr_t*, uintptr_t*, int, uintptr_t*, uintptr_t*);
-LocalPlayer* LocalPlayer$LocalPlayer(LocalPlayer* self, uintptr_t* minecraft, uintptr_t* level, uintptr_t* user, int gamemode, uintptr_t* raknetGUID, uintptr_t* mceUUID)
+LocalPlayer* (*_LocalPlayer$LocalPlayer)(LocalPlayer*, MinecraftClient*, uintptr_t*, uintptr_t*, uintptr_t*, uint64_t);
+LocalPlayer* LocalPlayer$LocalPlayer(LocalPlayer* self, MinecraftClient* client, uintptr_t* level, uintptr_t* gametype, uintptr_t* networkID, uint64_t uuid)
 {
 	MCPE_localplayer = self;
-	return _LocalPlayer$LocalPlayer(self, minecraft, level, user, gamemode, raknetGUID, mceUUID);
+	MCPE_client = client;
+	return _LocalPlayer$LocalPlayer(self, client, level, gametype, networkID, uuid);
 }

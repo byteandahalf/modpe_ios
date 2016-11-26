@@ -1,8 +1,8 @@
 #include "../TinyJS.h"
 
 #include "../externs.h"
-#include "../mcpe/common.h"
-#include "../mcpe/Player.h"
+#include "../minecraftpe/common.h"
+#include "../minecraftpe/Player.h"
 
 namespace LevelNS
 {
@@ -25,7 +25,7 @@ void getTile(CScriptVar* jsfunc, void*)
 
 	int retval = BlockSource$getBlockAndData(MCPE_localplayer->region, BlockPos{x, y, z}).blockId;
 
-	jsfunc->setReturnVar(new CScriptVar(retval));
+	jsfunc->setReturnVar(new CScriptVar((long) retval));
 }
 
 void getData(CScriptVar* jsfunc, void*)
@@ -36,6 +36,6 @@ void getData(CScriptVar* jsfunc, void*)
 
 	int retval = BlockSource$getBlockAndData(MCPE_localplayer->region, BlockPos{x, y, z}).data;
 
-	jsfunc->setReturnVar(new CScriptVar(retval));
+	jsfunc->setReturnVar(new CScriptVar((long) retval));
 }
 };

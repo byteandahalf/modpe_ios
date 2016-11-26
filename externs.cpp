@@ -1,12 +1,15 @@
 #include <stdint.h>
+#include <string>
 
 struct CTinyJS;
 struct BlockSource;
 struct LocalPlayer;
+struct MinecraftClient;
 struct FullBlock;
 struct BlockPos;
 struct Entity;
 struct Level;
+struct GuiData;
 
 //the JavaScript interpreter
 CTinyJS* interpreter;
@@ -16,6 +19,7 @@ bool PREVENTDEFAULT = false;
 
 //pointers
 LocalPlayer* MCPE_localplayer;
+MinecraftClient* MCPE_client;
 uintptr_t** CreativeMode$vtable;
 uintptr_t** SurvivalMode$vtable;
 
@@ -24,3 +28,4 @@ bool (*BlockSource$setBlockAndData)(BlockSource*, int, int, int, FullBlock, int)
 FullBlock (*BlockSource$getBlockAndData)(BlockSource*, const BlockPos&);
 uint64_t (*Entity$getUniqueID)(Entity*);
 Entity* (*Level$getEntity)(Level*, uint64_t, bool);
+void (*GuiData$addMessage)(GuiData*, const std::string&, const std::string&, int, bool);

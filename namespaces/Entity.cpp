@@ -1,8 +1,8 @@
 #include "../TinyJS.h"
 
 #include "../externs.h"
-#include "../mcpe/common.h"
-#include "../mcpe/Player.h"
+#include "../minecraftpe/common.h"
+#include "../minecraftpe/Player.h"
 
 Entity* modpe_entityWrapper(uint64_t uniqueID)
 {

@@ -202,7 +202,7 @@ public:
     CScriptVar(const std::string &varData, int varFlags); ///< User defined
     CScriptVar(const std::string &str); ///< Create a string
     CScriptVar(double varData);
-    CScriptVar(int val);
+    CScriptVar(long val);
     ~CScriptVar(void);
 
     CScriptVar *getReturnVar(); ///< If this is a function, get the result value (for use by native functions)
@@ -222,12 +222,12 @@ public:
     int getArrayLength(); ///< If this is an array, return the number of items in it (else 0)
     int getChildren(); ///< Get the number of children
 
-    int getInt();
+    long getInt();
     bool getBool() { return getInt() != 0; }
     double getDouble();
     const std::string &getString();
     std::string getParsableString(); ///< get Data as a parsable javascript string
-    void setInt(int num);
+    void setInt(long num);
     void setDouble(double val);
     void setString(const std::string &str);
     void setUndefined();

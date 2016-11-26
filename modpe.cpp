@@ -12,6 +12,8 @@
 
 //forward decs for prototypes
 struct LocalPlayer;
+struct MinecraftClient;
+struct Level;
 struct ItemInstance;
 struct BlockPos;
 struct FullBlock;
@@ -27,13 +29,14 @@ extern bool (*_SurvivalMode$useItemOn)(uintptr_t*, uintptr_t*, ItemInstance&, co
 bool SurvivalMode$useItemOn(uintptr_t*, uintptr_t*, ItemInstance&, const BlockPos&, signed char, uintptr_t*);
 extern void (*_GameMode$attack)(uintptr_t*, Player*, Entity*);
 void GameMode$attack(uintptr_t*, Player*, Entity*);
-extern LocalPlayer* (*_LocalPlayer$LocalPlayer)(LocalPlayer*, uintptr_t*, uintptr_t*, uintptr_t*, int, uintptr_t*, uintptr_t*);
-LocalPlayer* LocalPlayer$LocalPlayer(LocalPlayer*, uintptr_t*, uintptr_t*, uintptr_t*, int, uintptr_t*, uintptr_t*);
+extern LocalPlayer* (*_LocalPlayer$LocalPlayer)(LocalPlayer*, MinecraftClient*, uintptr_t*, uintptr_t*, uintptr_t*, uint64_t);
+LocalPlayer* LocalPlayer$LocalPlayer(LocalPlayer*, MinecraftClient*, uintptr_t*, uintptr_t*, uintptr_t*, uint64_t);
 /*
 *	ModPE calls
 */
 //top-level
 void print(CScriptVar*, void*);
+void clientMessage(CScriptVar*, void*);
 void preventDefault(CScriptVar*, void*);
 //Level
 namespace LevelNS
@@ -61,7 +64,7 @@ namespace PlayerNS
 
 void runTestScript()
 {
-	const char* script = "var/mobile/Media/script.js";
+	const char* script = "var/mobile/modpe/script.js";
 
 	struct stat results;
 	if(!stat(script, &results) == 0)
@@ -102,22 +105,23 @@ void runTestScript()
 void registerScriptCalls()
 {
 	interpreter->addNative("function print(text)", print, interpreter);
+	interpreter->addNative("function clientMessage(text)", clientMessage, interpreter);
 	interpreter->addNative("function preventDefault()", preventDefault, interpreter);
 
-	interpreter->addNative("function Level.setTile(x, y, z, blockId, data)", LevelNS::setTile, interpreter);
-	interpreter->addNative("function Level.getTile(x, y, z)", LevelNS::getTile, interpreter);
-	interpreter->addNative("function Level.getData(x, y, z)", LevelNS::getData, interpreter);
+	//interpreter->addNative("function Level.setTile(x, y, z, blockId, data)", LevelNS::setTile, interpreter);
+	//interpreter->addNative("function Level.getTile(x, y, z)", LevelNS::getTile, interpreter);
+	//interpreter->addNative("function Level.getData(x, y, z)", LevelNS::getData, interpreter);
 
-	interpreter->addNative("function Entity.getPosX(uniqueID)", EntityNS::getPosX, interpreter);
-	interpreter->addNative("function Entity.getPosY(uniqueID)", EntityNS::getPosY, interpreter);
-	interpreter->addNative("function Entity.getPosZ(uniqueID)", EntityNS::getPosZ, interpreter);
-	interpreter->addNative("function Entity.setPosition(uniqueID)", EntityNS::setPosition, interpreter);
-	interpreter->addNative("function Entity.setPositionRelative(uniqueID)", EntityNS::setPositionRelative, interpreter);
-	interpreter->addNative("function Entity.getVelX(uniqueID)", EntityNS::getVelX, interpreter);
-	interpreter->addNative("function Entity.getVelY(uniqueID)", EntityNS::getVelY, interpreter);
-	interpreter->addNative("function Entity.getVelZ(uniqueID)", EntityNS::getVelZ, interpreter);
+	//interpreter->addNative("function Entity.getPosX(uniqueID)", EntityNS::getPosX, interpreter);
+	//interpreter->addNative("function Entity.getPosY(uniqueID)", EntityNS::getPosY, interpreter);
+	//interpreter->addNative("function Entity.getPosZ(uniqueID)", EntityNS::getPosZ, interpreter);
+	//interpreter->addNative("function Entity.setPosition(uniqueID)", EntityNS::setPosition, interpreter);
+	//interpreter->addNative("function Entity.setPositionRelative(uniqueID)", EntityNS::setPositionRelative, interpreter);
+	//interpreter->addNative("function Entity.getVelX(uniqueID)", EntityNS::getVelX, interpreter);
+	//interpreter->addNative("function Entity.getVelY(uniqueID)", EntityNS::getVelY, interpreter);
+	//interpreter->addNative("function Entity.getVelZ(uniqueID)", EntityNS::getVelZ, interpreter);
 
-	interpreter->addNative("function Player.getEntity()", PlayerNS::getEntity, interpreter);
+	//interpreter->addNative("function Player.getEntity()", PlayerNS::getEntity, interpreter);
 }
 
 void VirtualHook(uintptr_t** vtable, short offset, void* hook, void** real);
@@ -125,19 +129,20 @@ void VirtualHook(uintptr_t** vtable, short offset, void* hook, void** real);
 void initPointers()
 {
 	// currently only arm64 support
-	FLHookSymbol(BlockSource$setBlockAndData, 0x1005CE8FC);
+	/*FLHookSymbol(BlockSource$setBlockAndData, 0x1005CE8FC);
 	FLHookSymbol(BlockSource$getBlockAndData, 0x1005CD0C0);
 	FLHookSymbol(Entity$getUniqueID, 0x1004D347C);
-	FLHookSymbol(Level$getEntity, 0x1005DA0B4);
+	FLHookSymbol(Level$getEntity, 0x1005DA0B4);*/
+	FLHookSymbol(GuiData$addMessage, FLAddress(0x00000000 | 1, 0x100108428));
 
-	FLHookSymbol(CreativeMode$vtable, 0x100EEA030);
-	FLHookSymbol(SurvivalMode$vtable, 0x100E72E10);
+	FLHookSymbol(CreativeMode$vtable, FLAddress(0x00000000, 0x1011D7C78));
+	FLHookSymbol(SurvivalMode$vtable, FLAddress(0x00000000, 0x10113DDC0));
 	VirtualHook(CreativeMode$vtable, GAMEMODE_USEITEMON_OFFSET, (void*) &CreativeMode$useItemOn, (void**) &_CreativeMode$useItemOn);
 	VirtualHook(SurvivalMode$vtable, GAMEMODE_USEITEMON_OFFSET, (void*) &SurvivalMode$useItemOn, (void**) &_SurvivalMode$useItemOn);
 	VirtualHook(CreativeMode$vtable, GAMEMODE_ATTACK_OFFSET, (void*) &GameMode$attack, (void**) &_GameMode$attack);
 	VirtualHook(SurvivalMode$vtable, GAMEMODE_ATTACK_OFFSET, (void*) &GameMode$attack, (void**) &_GameMode$attack);
 
-	FLHookFunction(0x1002C47E8, (void*) &LocalPlayer$LocalPlayer, (void**) &_LocalPlayer$LocalPlayer);
+	FLHookFunction(FLAddress(0x00000000 | 1, 0x100355e90), (void*) &LocalPlayer$LocalPlayer, (void**) &_LocalPlayer$LocalPlayer);
 }
 
 void initInterpreter()
