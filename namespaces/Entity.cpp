@@ -6,7 +6,10 @@
 
 Entity* modpe_entityWrapper(uint64_t uniqueID)
 {
-	return Level$getEntity(MCPE_localplayer->level, uniqueID, false);
+	Entity* retval = Level$fetchEntity(MCPE_localplayer->level, uniqueID, false);
+
+	if(!retval)
+		return MCPE_localplayer;
 }
 
 namespace EntityNS
@@ -75,9 +78,9 @@ void setPosition(CScriptVar* jsfunc, void*)
 	uintptr_t** vtable = *((uintptr_t***) entity);
 	void (*setPos)(Entity*, const Vec3&) = (void (*)(Entity*, const Vec3&)) vtable[6];
 
-	float x = jsfunc->getParameter("x")->getDouble(),
-		y = jsfunc->getParameter("y")->getDouble(),
-		z = jsfunc->getParameter("z")->getDouble();
+	float x = 	static_cast<float>(jsfunc->getParameter("x")->getDouble()),
+		y = 	static_cast<float>(jsfunc->getParameter("y")->getDouble()),
+		z = 	static_cast<float>(jsfunc->getParameter("z")->getDouble());
 
 	setPos(entity, Vec3{x, y, z});
 }
@@ -89,9 +92,9 @@ void setPositionRelative(CScriptVar* jsfunc, void*)
 	void (*setPos)(Entity*, const Vec3&) = (void (*)(Entity*, const Vec3&)) vtable[6];
 	const Vec3& (*getPos)(Entity*) = (const Vec3& (*)(Entity*)) vtable[7];
 
-	float x = jsfunc->getParameter("x")->getDouble() + getPos(entity).x,
-		y = jsfunc->getParameter("y")->getDouble() + getPos(entity).y,
-		z = jsfunc->getParameter("z")->getDouble() + getPos(entity).z;
+	float x = 	static_cast<float>(jsfunc->getParameter("x")->getDouble()) + getPos(entity).x,
+		y = 	static_cast<float>(jsfunc->getParameter("y")->getDouble()) + getPos(entity).y, 
+		z = 	static_cast<float>(jsfunc->getParameter("z")->getDouble()) + getPos(entity).z;
 
 	setPos(entity, Vec3{x, y, z});
 }

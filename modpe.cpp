@@ -45,6 +45,13 @@ namespace LevelNS
 	void setTile(CScriptVar*, void*);
 	void getTile(CScriptVar*, void*);
 	void getData(CScriptVar*, void*);
+	void getWorldName(CScriptVar*, void*);
+	void getDifficulty(CScriptVar*, void*);
+	void setDifficulty(CScriptVar*, void*);
+	void getGameMode(CScriptVar*, void*);
+	void setGameMode(CScriptVar*, void*);
+	void getTime(CScriptVar*, void*);
+	void setTime(CScriptVar*, void*);
 };
 namespace EntityNS
 {
@@ -109,19 +116,26 @@ void registerScriptCalls()
 	interpreter->addNative("function clientMessage(text)", clientMessage, interpreter);
 	interpreter->addNative("function preventDefault()", preventDefault, interpreter);
 
-	interpreter->addNative("function Level.explode(x, y, z, radius)", LevelNS::explode, interpreter);;
+	interpreter->addNative("function Level.explode(x, y, z, radius, makeFire, destroyBlocks, par7float)", LevelNS::explode, interpreter);
 	interpreter->addNative("function Level.setTile(x, y, z, blockId, data)", LevelNS::setTile, interpreter);
 	interpreter->addNative("function Level.getTile(x, y, z)", LevelNS::getTile, interpreter);
 	interpreter->addNative("function Level.getData(x, y, z)", LevelNS::getData, interpreter);
+	interpreter->addNative("function Level.getWorldName()", LevelNS::getWorldName, interpreter);
+	interpreter->addNative("function Level.getDifficulty()", LevelNS::getDifficulty, interpreter);
+	interpreter->addNative("function Level.setDifficulty(difficulty)", LevelNS::setDifficulty, interpreter);
+	//interpreter->addNative("function Level.getGameMode()", LevelNS::getGameMode, interpreter);
+	//interpreter->addNative("function Level.setGameMode(gamemode)", LevelNS::setGameMode, interpreter);
+	interpreter->addNative("function Level.getTime()", LevelNS::getTime, interpreter);
+	interpreter->addNative("function Level.setTime(time)", LevelNS::setTime, interpreter);
 
-	//interpreter->addNative("function Entity.getPosX(uniqueID)", EntityNS::getPosX, interpreter);
-	//interpreter->addNative("function Entity.getPosY(uniqueID)", EntityNS::getPosY, interpreter);
-	//interpreter->addNative("function Entity.getPosZ(uniqueID)", EntityNS::getPosZ, interpreter);
-	//interpreter->addNative("function Entity.setPosition(uniqueID)", EntityNS::setPosition, interpreter);
-	//interpreter->addNative("function Entity.setPositionRelative(uniqueID)", EntityNS::setPositionRelative, interpreter);
-	//interpreter->addNative("function Entity.getVelX(uniqueID)", EntityNS::getVelX, interpreter);
-	//interpreter->addNative("function Entity.getVelY(uniqueID)", EntityNS::getVelY, interpreter);
-	//interpreter->addNative("function Entity.getVelZ(uniqueID)", EntityNS::getVelZ, interpreter);
+	interpreter->addNative("function Entity.getPosX(uniqueID)", EntityNS::getPosX, interpreter);
+	interpreter->addNative("function Entity.getPosY(uniqueID)", EntityNS::getPosY, interpreter);
+	interpreter->addNative("function Entity.getPosZ(uniqueID)", EntityNS::getPosZ, interpreter);
+	interpreter->addNative("function Entity.setPosition(uniqueID, x, y, z)", EntityNS::setPosition, interpreter);
+	interpreter->addNative("function Entity.setPositionRelative(uniqueID, x, y, z)", EntityNS::setPositionRelative, interpreter);
+	interpreter->addNative("function Entity.getVelX(uniqueID)", EntityNS::getVelX, interpreter);
+	interpreter->addNative("function Entity.getVelY(uniqueID)", EntityNS::getVelY, interpreter);
+	interpreter->addNative("function Entity.getVelZ(uniqueID)", EntityNS::getVelZ, interpreter);
 
 	//interpreter->addNative("function Player.getEntity()", PlayerNS::getEntity, interpreter);
 }
@@ -135,8 +149,8 @@ void initPointers()
 	FLHookSymbol(Level$explode, FLAddress(0x00000000 | 1, 0x1007a9118));
 	FLHookSymbol(BlockSource$setBlockAndData, FLAddress(0x00000000 | 1, 0x10079bc80));
 	FLHookSymbol(BlockSource$getBlockAndData, FLAddress(0x00000000 | 1, 0x10079a1fc));
-	/*FLHookSymbol(Entity$getUniqueID, 0x1004D347C);
-	FLHookSymbol(Level$getEntity, 0x1005DA0B4);*/
+	//FLHookSymbol(Entity$getUniqueID, 0x1004D347C);
+	FLHookSymbol(Level$fetchEntity, FLAddress(0x00000000 | 1, 0x1007a8920));
 	FLHookSymbol(GuiData$addMessage, FLAddress(0x00000000 | 1, 0x100108428));
 
 	FLHookSymbol(CreativeMode$vtable, FLAddress(0x00000000, 0x1011D7C78));

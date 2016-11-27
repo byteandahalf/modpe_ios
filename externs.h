@@ -28,7 +28,7 @@ extern void (*Level$explode)(Level*, BlockSource*, Entity*, const Vec3&, float, 
 extern bool (*BlockSource$setBlockAndData)(BlockSource*, int, int, int, FullBlock, int);
 extern FullBlock (*BlockSource$getBlockAndData)(BlockSource*, const BlockPos&);
 extern uint64_t (*Entity$getUniqueID)(Entity*);
-extern Entity* (*Level$getEntity)(Level*, uint64_t, bool);
+extern Entity* (*Level$fetchEntity)(Level*, uint64_t, bool);
 extern void (*GuiData$addMessage)(GuiData*, const std::string&, const std::string&, int, bool);
 
 #endif

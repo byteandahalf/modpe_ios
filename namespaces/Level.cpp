@@ -3,6 +3,7 @@
 #include "../externs.h"
 #include "../minecraftpe/common.h"
 #include "../minecraftpe/Player.h"
+#include "../minecraftpe/Level.h"
 
 namespace LevelNS
 {
@@ -10,13 +11,17 @@ void explode(CScriptVar* jsfunc, void*)
 {
 	float x =		static_cast<float>(jsfunc->getParameter("x")->getInt()),
 		y = 		static_cast<float>(jsfunc->getParameter("y")->getInt()),
-		z = 		static_cast<float>(jsfunc->getParameter("z")->getInt());
-	float radius =	static_cast<float>(jsfunc->getParameter("radius")->getDouble());
+		z = 		static_cast<float>(jsfunc->getParameter("z")->getInt()),
+		radius =	static_cast<float>(jsfunc->getParameter("radius")->getDouble()),
+		par7float =	static_cast<float>(jsfunc->getParameter("par7float")->getDouble());
+	bool makeFire = jsfunc->getParameter("makeFire")->getBool(),
+		destroyBlocks = jsfunc->getParameter("destroyBlocks")->getBool();
+
 
 	if(MCPE_localplayer->level != NULL)
 	{
 		// Explode:		Level, Region, Entity(NULL for none), radius, makeFire, destroyBlocks, idk
-		Level$explode(MCPE_localplayer->level, MCPE_localplayer->region, NULL, Vec3{x, y, z}, radius, false, true, 10.0F);
+		Level$explode(MCPE_localplayer->level, MCPE_localplayer->region, NULL, Vec3{x, y, z}, radius, makeFire, destroyBlocks, par7float);
 	}
 }
 
@@ -62,5 +67,43 @@ void getData(CScriptVar* jsfunc, void*)
 	}
 
 	jsfunc->setReturnVar(new CScriptVar((long) retval));
+}
+
+void getWorldName(CScriptVar* jsfunc, void*)
+{
+	jsfunc->setReturnVar(new CScriptVar(MCPE_localplayer->level->data.levelName));
+}
+
+void getDifficulty(CScriptVar* jsfunc, void*)
+{
+	jsfunc->setReturnVar(new CScriptVar((long) MCPE_localplayer->level->data.difficulty));
+}
+void setDifficulty(CScriptVar* jsfunc, void*)
+{
+	int difficulty = jsfunc->getParameter("difficulty")->getInt();
+
+	MCPE_localplayer->level->data.difficulty = difficulty;
+}
+
+void getGameMode(CScriptVar* jsfunc, void*)
+{
+	jsfunc->setReturnVar(new CScriptVar((long) MCPE_localplayer->level->data.gameType));
+}
+void setGameMode(CScriptVar* jsfunc, void*)
+{
+	int gamemode = jsfunc->getParameter("gamemode")->getInt();
+
+	MCPE_localplayer->level->data.gameType = gamemode;
+}
+
+void getTime(CScriptVar* jsfunc, void*)
+{
+	jsfunc->setReturnVar(new CScriptVar((long) MCPE_localplayer->level->data.time));
+}
+void setTime(CScriptVar* jsfunc, void*)
+{
+	int _time = jsfunc->getParameter("time")->getInt();
+
+	MCPE_localplayer->level->data.time = _time;
 }
 };
