@@ -53,7 +53,7 @@ bool SurvivalMode$useItemOn(uintptr_t* self, uintptr_t* player, ItemInstance& it
 void (*_GameMode$attack)(uintptr_t*, Player*, Entity*);
 void GameMode$attack(uintptr_t* self, Player* attacker, Entity* victim)
 {
-	interpreter->execute("attackHook(0, 0)");//+tostr64(Entity$getUniqueID(attacker))+","+tostr64(Entity$getUniqueID(victim))+");");
+	interpreter->execute("attackHook(0, 0);");//+tostr64(Entity$getUniqueID(attacker))+","+tostr64(Entity$getUniqueID(victim))+");");
 
 	if(PREVENTDEFAULT)
 	{

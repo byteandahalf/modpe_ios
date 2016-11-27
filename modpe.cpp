@@ -158,7 +158,7 @@ void initPointers()
 	VirtualHook(CreativeMode$vtable, GAMEMODE_USEITEMON_OFFSET, (void*) &CreativeMode$useItemOn, (void**) &_CreativeMode$useItemOn);
 	VirtualHook(SurvivalMode$vtable, GAMEMODE_USEITEMON_OFFSET, (void*) &SurvivalMode$useItemOn, (void**) &_SurvivalMode$useItemOn);
 	VirtualHook(CreativeMode$vtable, GAMEMODE_ATTACK_OFFSET, (void*) &GameMode$attack, (void**) &_GameMode$attack);
-	VirtualHook(SurvivalMode$vtable, GAMEMODE_ATTACK_OFFSET, (void*) &GameMode$attack, (void**) &_GameMode$attack);
+	//VirtualHook(SurvivalMode$vtable, GAMEMODE_ATTACK_OFFSET, (void*) &GameMode$attack, (void**) &_GameMode$attack);
 
 	FLHookFunction(FLAddress(0x00000000 | 1, 0x100355e90), (void*) &LocalPlayer$LocalPlayer, (void**) &_LocalPlayer$LocalPlayer);
 }
