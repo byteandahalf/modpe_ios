@@ -13,6 +13,7 @@ struct BlockPos;
 struct Entity;
 struct Level;
 struct GuiData;
+struct Vec3;
 
 extern CTinyJS* interpreter;
 
@@ -23,6 +24,7 @@ extern MinecraftClient* MCPE_client;
 extern uintptr_t** CreativeMode$vtable;
 extern uintptr_t** SurvivalMode$vtable;
 
+extern void (*Level$explode)(Level*, BlockSource*, Entity*, const Vec3&, float, bool, bool, float);
 extern bool (*BlockSource$setBlockAndData)(BlockSource*, int, int, int, FullBlock, int);
 extern FullBlock (*BlockSource$getBlockAndData)(BlockSource*, const BlockPos&);
 extern uint64_t (*Entity$getUniqueID)(Entity*);

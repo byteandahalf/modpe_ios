@@ -41,6 +41,7 @@ void preventDefault(CScriptVar*, void*);
 //Level
 namespace LevelNS
 {
+	void explode(CScriptVar*, void*);
 	void setTile(CScriptVar*, void*);
 	void getTile(CScriptVar*, void*);
 	void getData(CScriptVar*, void*);
@@ -108,9 +109,10 @@ void registerScriptCalls()
 	interpreter->addNative("function clientMessage(text)", clientMessage, interpreter);
 	interpreter->addNative("function preventDefault()", preventDefault, interpreter);
 
-	//interpreter->addNative("function Level.setTile(x, y, z, blockId, data)", LevelNS::setTile, interpreter);
-	//interpreter->addNative("function Level.getTile(x, y, z)", LevelNS::getTile, interpreter);
-	//interpreter->addNative("function Level.getData(x, y, z)", LevelNS::getData, interpreter);
+	interpreter->addNative("function Level.explode(x, y, z, radius)", LevelNS::explode, interpreter);;
+	interpreter->addNative("function Level.setTile(x, y, z, blockId, data)", LevelNS::setTile, interpreter);
+	interpreter->addNative("function Level.getTile(x, y, z)", LevelNS::getTile, interpreter);
+	interpreter->addNative("function Level.getData(x, y, z)", LevelNS::getData, interpreter);
 
 	//interpreter->addNative("function Entity.getPosX(uniqueID)", EntityNS::getPosX, interpreter);
 	//interpreter->addNative("function Entity.getPosY(uniqueID)", EntityNS::getPosY, interpreter);
@@ -124,14 +126,16 @@ void registerScriptCalls()
 	//interpreter->addNative("function Player.getEntity()", PlayerNS::getEntity, interpreter);
 }
 
+
 void VirtualHook(uintptr_t** vtable, short offset, void* hook, void** real);
 
 void initPointers()
 {
 	// currently only arm64 support
-	/*FLHookSymbol(BlockSource$setBlockAndData, 0x1005CE8FC);
-	FLHookSymbol(BlockSource$getBlockAndData, 0x1005CD0C0);
-	FLHookSymbol(Entity$getUniqueID, 0x1004D347C);
+	FLHookSymbol(Level$explode, FLAddress(0x00000000 | 1, 0x1007a9118));
+	FLHookSymbol(BlockSource$setBlockAndData, FLAddress(0x00000000 | 1, 0x10079bc80));
+	FLHookSymbol(BlockSource$getBlockAndData, FLAddress(0x00000000 | 1, 0x10079a1fc));
+	/*FLHookSymbol(Entity$getUniqueID, 0x1004D347C);
 	FLHookSymbol(Level$getEntity, 0x1005DA0B4);*/
 	FLHookSymbol(GuiData$addMessage, FLAddress(0x00000000 | 1, 0x100108428));
 

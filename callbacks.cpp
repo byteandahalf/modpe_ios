@@ -11,7 +11,6 @@ struct MinecraftClient;
 #include "minecraftpe/Player.h"
 
 
-
 std::string tostr(int);
 std::string tostr64(uint64_t);
 

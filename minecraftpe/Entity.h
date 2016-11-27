@@ -6,10 +6,10 @@ struct BlockSource;
 
 struct Entity
 {
-	char filler[48];
-	Level* level; // 48
-	char filler2[440]; // 56
-	BlockSource* region; // 496
+	char filler[64];
+	Level* level; // 64
+	char filler2[104]; // 72
+	BlockSource* region; // 176
 };
 
 #endif

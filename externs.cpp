@@ -10,6 +10,7 @@ struct BlockPos;
 struct Entity;
 struct Level;
 struct GuiData;
+struct Vec3;
 
 //the JavaScript interpreter
 CTinyJS* interpreter;
@@ -24,6 +25,7 @@ uintptr_t** CreativeMode$vtable;
 uintptr_t** SurvivalMode$vtable;
 
 //function pointers
+void (*Level$explode)(Level*, BlockSource*, Entity*, const Vec3&, float, bool, bool, float);
 bool (*BlockSource$setBlockAndData)(BlockSource*, int, int, int, FullBlock, int);
 FullBlock (*BlockSource$getBlockAndData)(BlockSource*, const BlockPos&);
 uint64_t (*Entity$getUniqueID)(Entity*);
