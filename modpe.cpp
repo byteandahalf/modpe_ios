@@ -27,8 +27,10 @@ extern bool (*_CreativeMode$useItemOn)(uintptr_t*, uintptr_t*, ItemInstance&, co
 bool CreativeMode$useItemOn(uintptr_t*, uintptr_t*, ItemInstance&, const BlockPos&, signed char, uintptr_t*);
 extern bool (*_SurvivalMode$useItemOn)(uintptr_t*, uintptr_t*, ItemInstance&, const BlockPos&, signed char, uintptr_t*);
 bool SurvivalMode$useItemOn(uintptr_t*, uintptr_t*, ItemInstance&, const BlockPos&, signed char, uintptr_t*);
-extern void (*_GameMode$attack)(uintptr_t*, Player*, Entity*);
-void GameMode$attack(uintptr_t*, Player*, Entity*);
+extern void (*_CreativeMode$attack)(uintptr_t*, Player*, Entity*);
+void CreativeMode$attack(uintptr_t*, Player*, Entity*);
+extern void (*_SurvivalMode$attack)(uintptr_t*, Player*, Entity*);
+void SurvivalMode$attack(uintptr_t*, Player*, Entity*);
 extern LocalPlayer* (*_LocalPlayer$LocalPlayer)(LocalPlayer*, MinecraftClient*, uintptr_t*, uintptr_t*, uintptr_t*, uint64_t);
 LocalPlayer* LocalPlayer$LocalPlayer(LocalPlayer*, MinecraftClient*, uintptr_t*, uintptr_t*, uintptr_t*, uint64_t);
 /*
@@ -75,7 +77,7 @@ void runTestScript()
 	const char* script = "var/mobile/modpe/script.js";
 
 	struct stat results;
-	if(!stat(script, &results) == 0)
+	if(stat(script, &results) != 0)
 	{
 		printf("Cannot stat file! '%s'\n", script);
 		return;
@@ -157,8 +159,8 @@ void initPointers()
 	FLHookSymbol(SurvivalMode$vtable, FLAddress(0x00000000, 0x10113DDC0));
 	VirtualHook(CreativeMode$vtable, GAMEMODE_USEITEMON_OFFSET, (void*) &CreativeMode$useItemOn, (void**) &_CreativeMode$useItemOn);
 	VirtualHook(SurvivalMode$vtable, GAMEMODE_USEITEMON_OFFSET, (void*) &SurvivalMode$useItemOn, (void**) &_SurvivalMode$useItemOn);
-	VirtualHook(CreativeMode$vtable, GAMEMODE_ATTACK_OFFSET, (void*) &GameMode$attack, (void**) &_GameMode$attack);
-	//VirtualHook(SurvivalMode$vtable, GAMEMODE_ATTACK_OFFSET, (void*) &GameMode$attack, (void**) &_GameMode$attack);
+	VirtualHook(CreativeMode$vtable, GAMEMODE_ATTACK_OFFSET, (void*) &CreativeMode$attack, (void**) &_CreativeMode$attack);
+	VirtualHook(SurvivalMode$vtable, GAMEMODE_ATTACK_OFFSET, (void*) &SurvivalMode$attack, (void**) &_SurvivalMode$attack);
 
 	FLHookFunction(FLAddress(0x00000000 | 1, 0x100355e90), (void*) &LocalPlayer$LocalPlayer, (void**) &_LocalPlayer$LocalPlayer);
 }

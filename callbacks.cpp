@@ -50,8 +50,8 @@ bool SurvivalMode$useItemOn(uintptr_t* self, uintptr_t* player, ItemInstance& it
 	return _SurvivalMode$useItemOn(self, player, itemStack, pos, side, vec);
 }
 
-void (*_GameMode$attack)(uintptr_t*, Player*, Entity*);
-void GameMode$attack(uintptr_t* self, Player* attacker, Entity* victim)
+void (*_CreativeMode$attack)(uintptr_t*, Player*, Entity*);
+void CreativeMode$attack(uintptr_t* self, Player* attacker, Entity* victim)
 {
 	interpreter->execute("attackHook(0, 0);");//+tostr64(Entity$getUniqueID(attacker))+","+tostr64(Entity$getUniqueID(victim))+");");
 
@@ -61,7 +61,21 @@ void GameMode$attack(uintptr_t* self, Player* attacker, Entity* victim)
 		return;
 	}
 
-	_GameMode$attack(self, attacker, victim);
+	_CreativeMode$attack(self, attacker, victim);
+}
+
+void (*_SurvivalMode$attack)(uintptr_t*, Player*, Entity*);
+void SurvivalMode$attack(uintptr_t* self, Player* attacker, Entity* victim)
+{
+	interpreter->execute("attackHook(0, 0);");//+tostr64(Entity$getUniqueID(attacker))+","+tostr64(Entity$getUniqueID(victim))+");");
+
+	if(PREVENTDEFAULT)
+	{
+		PREVENTDEFAULT = false;
+		return;
+	}
+
+	_SurvivalMode$attack(self, attacker, victim);
 }
 
 LocalPlayer* (*_LocalPlayer$LocalPlayer)(LocalPlayer*, MinecraftClient*, uintptr_t*, uintptr_t*, uintptr_t*, uint64_t);
