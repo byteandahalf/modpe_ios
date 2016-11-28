@@ -1,7 +1,7 @@
 #ifndef __GLOBALS_H
 #define __GLOBALS_H
 
-#include <stdint.h>
+#include <cstdint>
 #include <string>
 
 struct CTinyJS;

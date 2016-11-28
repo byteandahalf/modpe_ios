@@ -37,7 +37,6 @@ bool CreativeMode$useItemOn(uintptr_t* self, uintptr_t* player, ItemInstance* it
 
 	return _CreativeMode$useItemOn(self, player, itemStack, pos, side, vec);
 }
-
 bool (*_SurvivalMode$useItemOn)(uintptr_t*, uintptr_t*, ItemInstance*, const BlockPos&, signed char, uintptr_t*);
 bool SurvivalMode$useItemOn(uintptr_t* self, uintptr_t* player, ItemInstance* itemStack, const BlockPos& pos, signed char side, uintptr_t* vec)
 {
@@ -73,7 +72,6 @@ void CreativeMode$attack(uintptr_t* self, Player* attacker, Entity* victim)
 
 	_CreativeMode$attack(self, attacker, victim);
 }
-
 void (*_SurvivalMode$attack)(uintptr_t*, Player*, Entity*);
 void SurvivalMode$attack(uintptr_t* self, Player* attacker, Entity* victim)
 {
@@ -86,6 +84,21 @@ void SurvivalMode$attack(uintptr_t* self, Player* attacker, Entity* victim)
 	}
 
 	_SurvivalMode$attack(self, attacker, victim);
+}
+
+void (*_CreativeMode$tick)(uintptr_t*);
+void CreativeMode$tick(uintptr_t* self)
+{
+	interpreter->execute("modTick();");
+
+	_CreativeMode$tick(self);
+}
+void (*_SurvivalMode$tick)(uintptr_t);
+void SurvivalMode$tick(uintptr_t* self)
+{
+	interpreter->execute("modTick();");
+
+	_CreativeMode$tick(self);
 }
 
 LocalPlayer* (*_LocalPlayer$LocalPlayer)(LocalPlayer*, MinecraftClient*, uintptr_t*, uintptr_t*, uintptr_t*, uint64_t);

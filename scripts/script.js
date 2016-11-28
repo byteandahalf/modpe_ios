@@ -27,7 +27,17 @@ function useItem(x, y, z, itemId, blockId, side)
 
 function attackHook(attacker, victim)
 {
-	clientMessage(attacker + victim);
+	clientMessage(Entity.getPosY(attacker));
 	Entity.setPosition(victim, 0, 100, 0);
 	Entity.setPositionRelative(attacker, 1, 1, 1);
+}
+
+var timer = 300;
+function modTick()
+{
+	if(timer-- <= 0)
+	{
+		timer = 300;
+		clientMessage("Hey dude this is inside a modTick!");
+	}
 }

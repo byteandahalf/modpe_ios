@@ -9,6 +9,7 @@
 //constants
 #define GAMEMODE_USEITEMON_OFFSET 13
 #define GAMEMODE_ATTACK_OFFSET 15
+#define GAMEMODE_TICK_OFFSET 17
 
 //forward decs for prototypes
 struct LocalPlayer;
@@ -31,6 +32,10 @@ extern void (*_CreativeMode$attack)(uintptr_t*, Player*, Entity*);
 void CreativeMode$attack(uintptr_t*, Player*, Entity*);
 extern void (*_SurvivalMode$attack)(uintptr_t*, Player*, Entity*);
 void SurvivalMode$attack(uintptr_t*, Player*, Entity*);
+extern void (*_CreativeMode$tick)(uintptr_t*);
+void CreativeMode$tick(uintptr_t*);
+extern void (*_SurvivalMode$tick)(uintptr_t*);
+void SurvivalMode$tick(uintptr_t*);
 extern LocalPlayer* (*_LocalPlayer$LocalPlayer)(LocalPlayer*, MinecraftClient*, uintptr_t*, uintptr_t*, uintptr_t*, uint64_t);
 LocalPlayer* LocalPlayer$LocalPlayer(LocalPlayer*, MinecraftClient*, uintptr_t*, uintptr_t*, uintptr_t*, uint64_t);
 /*
@@ -161,6 +166,8 @@ void initPointers()
 	VirtualHook(SurvivalMode$vtable, GAMEMODE_USEITEMON_OFFSET, (void*) &SurvivalMode$useItemOn, (void**) &_SurvivalMode$useItemOn);
 	VirtualHook(CreativeMode$vtable, GAMEMODE_ATTACK_OFFSET, (void*) &CreativeMode$attack, (void**) &_CreativeMode$attack);
 	VirtualHook(SurvivalMode$vtable, GAMEMODE_ATTACK_OFFSET, (void*) &SurvivalMode$attack, (void**) &_SurvivalMode$attack);
+	VirtualHook(CreativeMode$vtable, GAMEMODE_TICK_OFFSET, (void*) &CreativeMode$tick, (void**) &_CreativeMode$tick);
+	VirtualHook(SurvivalMode$vtable, GAMEMODE_TICK_OFFSET, (void*) &SurvivalMode$tick, (void**) &_SurvivalMode$tick);
 
 	FLHookFunction(FLAddress(0x00000000 | 1, 0x100355e90), (void*) &LocalPlayer$LocalPlayer, (void**) &_LocalPlayer$LocalPlayer);
 }
