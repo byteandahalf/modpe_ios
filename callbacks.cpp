@@ -16,11 +16,15 @@ struct MinecraftClient;
 std::string tostr(int);
 std::string tostr64(uint64_t);
 
-bool (*_CreativeMode$useItemOn)(uintptr_t*, uintptr_t*, ItemInstance&, const BlockPos&, signed char, uintptr_t*);
-bool CreativeMode$useItemOn(uintptr_t* self, uintptr_t* player, ItemInstance& itemStack, const BlockPos& pos, signed char side, uintptr_t* vec)
+bool (*_CreativeMode$useItemOn)(uintptr_t*, uintptr_t*, ItemInstance*, const BlockPos&, signed char, uintptr_t*);
+bool CreativeMode$useItemOn(uintptr_t* self, uintptr_t* player, ItemInstance* itemStack, const BlockPos& pos, signed char side, uintptr_t* vec)
 {
 	int x = pos.x, y = pos.y, z = pos.z;
-	int itemId = itemStack.item->itemId;
+	int itemId = 0;
+	if(itemStack && itemStack->item)
+	{
+		itemId = itemStack->item->itemId;
+	}
 	int blockId = BlockSource$getBlockAndData(MCPE_localplayer->region, pos).blockId;
 
 	interpreter->execute("useItem("+tostr(x)+","+tostr(y)+","+tostr(z)+","+tostr(itemId)+","+tostr(blockId)+","+tostr(side)+");");
@@ -34,11 +38,15 @@ bool CreativeMode$useItemOn(uintptr_t* self, uintptr_t* player, ItemInstance& it
 	return _CreativeMode$useItemOn(self, player, itemStack, pos, side, vec);
 }
 
-bool (*_SurvivalMode$useItemOn)(uintptr_t*, uintptr_t*, ItemInstance&, const BlockPos&, signed char, uintptr_t*);
-bool SurvivalMode$useItemOn(uintptr_t* self, uintptr_t* player, ItemInstance& itemStack, const BlockPos& pos, signed char side, uintptr_t* vec)
+bool (*_SurvivalMode$useItemOn)(uintptr_t*, uintptr_t*, ItemInstance*, const BlockPos&, signed char, uintptr_t*);
+bool SurvivalMode$useItemOn(uintptr_t* self, uintptr_t* player, ItemInstance* itemStack, const BlockPos& pos, signed char side, uintptr_t* vec)
 {
 	int x = pos.x, y = pos.y, z = pos.z;
-	int itemId = itemStack.item->itemId;
+	int itemId = 0;
+	if(itemStack && itemStack->item)
+	{
+		itemId = itemStack->item->itemId;
+	}
 	int blockId = BlockSource$getBlockAndData(MCPE_localplayer->region, pos).blockId;
 
 	interpreter->execute("useItem("+tostr(x)+","+tostr(y)+","+tostr(z)+","+tostr(itemId)+","+tostr(blockId)+","+tostr(side)+");");
@@ -55,7 +63,7 @@ bool SurvivalMode$useItemOn(uintptr_t* self, uintptr_t* player, ItemInstance& it
 void (*_CreativeMode$attack)(uintptr_t*, Player*, Entity*);
 void CreativeMode$attack(uintptr_t* self, Player* attacker, Entity* victim)
 {
-	interpreter->execute("attackHook("+tostr64(Entity$getUniqueID(attacker))+","+tostr64(Entity$getUniqueID(victim))+");");
+	interpreter->execute("attackHook(\""+tostr64(Entity$getUniqueID(attacker))+"\",\""+tostr64(Entity$getUniqueID(victim))+"\");");
 
 	if(PREVENTDEFAULT)
 	{
@@ -69,7 +77,7 @@ void CreativeMode$attack(uintptr_t* self, Player* attacker, Entity* victim)
 void (*_SurvivalMode$attack)(uintptr_t*, Player*, Entity*);
 void SurvivalMode$attack(uintptr_t* self, Player* attacker, Entity* victim)
 {
-	interpreter->execute("attackHook("+tostr64(Entity$getUniqueID(attacker))+","+tostr64(Entity$getUniqueID(victim))+");");
+	interpreter->execute("attackHook(\""+tostr64(Entity$getUniqueID(attacker))+"\",\""+tostr64(Entity$getUniqueID(victim))+"\");");
 
 	if(PREVENTDEFAULT)
 	{

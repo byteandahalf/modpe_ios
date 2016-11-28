@@ -51,7 +51,7 @@ void getTile(CScriptVar* jsfunc, void*)
 		retval = BlockSource$getBlockAndData(MCPE_localplayer->region, BlockPos{x, y, z}).blockId;
 	}
 
-	jsfunc->setReturnVar(new CScriptVar((long) retval));
+	jsfunc->setReturnVar(new CScriptVar(retval));
 }
 
 void getData(CScriptVar* jsfunc, void*)
@@ -66,7 +66,7 @@ void getData(CScriptVar* jsfunc, void*)
 		retval = BlockSource$getBlockAndData(MCPE_localplayer->region, BlockPos{x, y, z}).data;
 	}
 
-	jsfunc->setReturnVar(new CScriptVar((long) retval));
+	jsfunc->setReturnVar(new CScriptVar(retval));
 }
 
 void getWorldName(CScriptVar* jsfunc, void*)
@@ -76,7 +76,7 @@ void getWorldName(CScriptVar* jsfunc, void*)
 
 void getDifficulty(CScriptVar* jsfunc, void*)
 {
-	jsfunc->setReturnVar(new CScriptVar((long) MCPE_localplayer->level->data.difficulty));
+	jsfunc->setReturnVar(new CScriptVar(MCPE_localplayer->level->data.difficulty));
 }
 void setDifficulty(CScriptVar* jsfunc, void*)
 {
@@ -87,7 +87,7 @@ void setDifficulty(CScriptVar* jsfunc, void*)
 
 void getGameMode(CScriptVar* jsfunc, void*)
 {
-	jsfunc->setReturnVar(new CScriptVar((long) MCPE_localplayer->level->data.gameType));
+	jsfunc->setReturnVar(new CScriptVar(MCPE_localplayer->level->data.gameType));
 }
 void setGameMode(CScriptVar* jsfunc, void*)
 {
@@ -98,7 +98,7 @@ void setGameMode(CScriptVar* jsfunc, void*)
 
 void getTime(CScriptVar* jsfunc, void*)
 {
-	jsfunc->setReturnVar(new CScriptVar((long) MCPE_localplayer->level->data.time));
+	jsfunc->setReturnVar(new CScriptVar(MCPE_localplayer->level->data.time));
 }
 void setTime(CScriptVar* jsfunc, void*)
 {

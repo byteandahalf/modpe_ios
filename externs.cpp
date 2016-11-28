@@ -28,6 +28,6 @@ uintptr_t** SurvivalMode$vtable;
 void (*Level$explode)(Level*, BlockSource*, Entity*, const Vec3&, float, bool, bool, float);
 bool (*BlockSource$setBlockAndData)(BlockSource*, int, int, int, FullBlock, int);
 FullBlock (*BlockSource$getBlockAndData)(BlockSource*, const BlockPos&);
-uint64_t (*Entity$getUniqueID)(Entity*);
+uint64_t& (*Entity$getUniqueID)(Entity*);
 Entity* (*Level$fetchEntity)(Level*, uint64_t, bool);
 void (*GuiData$addMessage)(GuiData*, const std::string&, const std::string&, int, bool);

@@ -13,7 +13,7 @@ function useItem(x, y, z, itemId, blockId, side)
 	}
 
 	clientMessage(Player.getEntity());
-	//Entity.setPosition(Player.getEntity(), 0, 100, 0);
+	Entity.setPositionRelative(Player.getEntity(), 0, 10, 0);
 
 	clientMessage(Level.getWorldName());
 	//clientMessage(Level.getGameMode());
@@ -27,6 +27,7 @@ function useItem(x, y, z, itemId, blockId, side)
 
 function attackHook(attacker, victim)
 {
-	// currently this crashes.
+	clientMessage(attacker + victim);
 	Entity.setPosition(victim, 0, 100, 0);
+	Entity.setPositionRelative(attacker, 1, 1, 1);
 }

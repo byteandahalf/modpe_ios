@@ -3,11 +3,15 @@
 #include "../externs.h"
 #include "../minecraftpe/Player.h"
 
+#include <string>
+
+std::string tostr64(uint64_t);
+
+
 namespace PlayerNS
 {
 void getEntity(CScriptVar* jsfunc, void*)
 {
-	// TODO: this doesn't work since CScriptVar doesn't have a uint64_t constructor
-	jsfunc->setReturnVar(new CScriptVar((long) Entity$getUniqueID(MCPE_localplayer)));
+	jsfunc->setReturnVar(new CScriptVar(tostr64(Entity$getUniqueID(MCPE_localplayer))));
 }
 };
