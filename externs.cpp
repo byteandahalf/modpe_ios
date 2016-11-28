@@ -11,6 +11,9 @@ struct Entity;
 struct Level;
 struct GuiData;
 struct Vec3;
+struct PlayerInventoryProxy;
+struct ItemInstance;
+struct InventorySlot;
 
 //the JavaScript interpreter
 CTinyJS* interpreter;
@@ -31,3 +34,6 @@ FullBlock (*BlockSource$getBlockAndData)(BlockSource*, const BlockPos&);
 uint64_t& (*Entity$getUniqueID)(Entity*);
 Entity* (*Level$fetchEntity)(Level*, uint64_t, bool);
 void (*GuiData$addMessage)(GuiData*, const std::string&, const std::string&, int, bool);
+InventorySlot (*PlayerInventoryProxy$getSelectedSlot)(PlayerInventoryProxy*);
+const ItemInstance& (*PlayerInventoryProxy$getItem)(PlayerInventoryProxy*, int, int);
+void (*PlayerInventoryProxy$clearSlot)(PlayerInventoryProxy*, int, int);

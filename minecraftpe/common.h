@@ -68,4 +68,10 @@ struct Vec3
 	float x, y, z;
 };
 
+struct InventorySlot
+{
+	uint8_t idk; // 0
+	int slotId; // 4
+};
+
 #endif

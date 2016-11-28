@@ -14,6 +14,9 @@ struct Entity;
 struct Level;
 struct GuiData;
 struct Vec3;
+struct PlayerInventoryProxy;
+struct ItemInstance;
+struct InventorySlot;
 
 extern CTinyJS* interpreter;
 
@@ -30,5 +33,8 @@ extern FullBlock (*BlockSource$getBlockAndData)(BlockSource*, const BlockPos&);
 extern uint64_t& (*Entity$getUniqueID)(Entity*);
 extern Entity* (*Level$fetchEntity)(Level*, uint64_t, bool);
 extern void (*GuiData$addMessage)(GuiData*, const std::string&, const std::string&, int, bool);
+extern InventorySlot (*PlayerInventoryProxy$getSelectedSlot)(PlayerInventoryProxy*);
+extern const ItemInstance& (*PlayerInventoryProxy$getItem)(PlayerInventoryProxy*, int, int);
+extern void (*PlayerInventoryProxy$clearSlot)(PlayerInventoryProxy*, int, int);
 
 #endif

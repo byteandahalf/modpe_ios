@@ -74,6 +74,14 @@ namespace EntityNS
 namespace PlayerNS
 {
 	void getEntity(CScriptVar*, void*);
+	void clearInventorySlot(CScriptVar*, void*);
+	void getSelectedSlotId(CScriptVar*, void*);
+	void getCarriedItem(CScriptVar*, void*);
+	void getCarriedItemCount(CScriptVar*, void*);
+	void getCarriedItemData(CScriptVar*, void*);
+	void getInventorySlot(CScriptVar*, void*);
+	void getInventorySlotCount(CScriptVar*, void*);
+	void getInventorySlotData(CScriptVar*, void*);
 };
 
 
@@ -123,7 +131,7 @@ void registerScriptCalls()
 	interpreter->addNative("function clientMessage(text)", clientMessage, interpreter);
 	interpreter->addNative("function preventDefault()", preventDefault, interpreter);
 
-	interpreter->addNative("function Level.explode(x, y, z, radius, makeFire, destroyBlocks, par7float)", LevelNS::explode, interpreter);
+	interpreter->addNative("function Level.explode(x, y, z, radius, makeFire, destroyBlocks, maxResistance)", LevelNS::explode, interpreter);
 	interpreter->addNative("function Level.setTile(x, y, z, blockId, data)", LevelNS::setTile, interpreter);
 	interpreter->addNative("function Level.getTile(x, y, z)", LevelNS::getTile, interpreter);
 	interpreter->addNative("function Level.getData(x, y, z)", LevelNS::getData, interpreter);
@@ -145,6 +153,14 @@ void registerScriptCalls()
 	interpreter->addNative("function Entity.getVelZ(uniqueID)", EntityNS::getVelZ, interpreter);
 
 	interpreter->addNative("function Player.getEntity()", PlayerNS::getEntity, interpreter);
+	interpreter->addNative("function Player.clearInventorySlot(slotId)", PlayerNS::clearInventorySlot, interpreter);
+	interpreter->addNative("function Player.getSelectedSlotId()", PlayerNS::getSelectedSlotId, interpreter);
+	interpreter->addNative("function Player.getCarriedItem()", PlayerNS::getCarriedItem, interpreter);
+	interpreter->addNative("function Player.getCarriedItemCount()", PlayerNS::getCarriedItemCount, interpreter);
+	interpreter->addNative("function Player.getCarriedItemData()", PlayerNS::getCarriedItemData, interpreter);
+	interpreter->addNative("function Player.getInventorySlot(slotId)", PlayerNS::getInventorySlot, interpreter);
+	interpreter->addNative("function Player.getInventorySlotCount(slotId)", PlayerNS::getInventorySlotCount, interpreter);
+	interpreter->addNative("function Player.getInventorySlotData(slotId)", PlayerNS::getInventorySlotData, interpreter);
 }
 
 
@@ -159,6 +175,10 @@ void initPointers()
 	FLHookSymbol(Entity$getUniqueID, FLAddress(0x00000000 | 1, 0x100657960));
 	FLHookSymbol(Level$fetchEntity, FLAddress(0x00000000 | 1, 0x1007a8920));
 	FLHookSymbol(GuiData$addMessage, FLAddress(0x00000000 | 1, 0x100108428));
+	FLHookSymbol(PlayerInventoryProxy$getSelectedSlot, FLAddress(0x00000000 | 1, 0x1007168c8));
+	FLHookSymbol(PlayerInventoryProxy$getItem, FLAddress(0x00000000 | 1, 0x100716884));
+	FLHookSymbol(PlayerInventoryProxy$clearSlot, FLAddress(0x00000000 | 1, 0x10071665c));
+	//0x1007a76f0 playSound
 
 	FLHookSymbol(CreativeMode$vtable, FLAddress(0x00000000, 0x1011D7C78));
 	FLHookSymbol(SurvivalMode$vtable, FLAddress(0x00000000, 0x10113DDC0));

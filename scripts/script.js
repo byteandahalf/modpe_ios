@@ -27,6 +27,11 @@ function useItem(x, y, z, itemId, blockId, side)
 
 function attackHook(attacker, victim)
 {
+	if(Player.getCarriedItem() == 19 && Player.getInventorySlotData(Player.getSelectedSlotId()) == 1)
+	{
+		Player.clearInventorySlot(Player.getSelectedSlotId());
+		clientMessage("Wet sponge!");
+	}
 	clientMessage(Entity.getPosY(attacker));
 	Entity.setPosition(victim, 0, 100, 0);
 	Entity.setPositionRelative(attacker, 1, 1, 1);

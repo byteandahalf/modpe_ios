@@ -13,15 +13,14 @@ void explode(CScriptVar* jsfunc, void*)
 		y = 		static_cast<float>(jsfunc->getParameter("y")->getInt()),
 		z = 		static_cast<float>(jsfunc->getParameter("z")->getInt()),
 		radius =	static_cast<float>(jsfunc->getParameter("radius")->getDouble()),
-		par7float =	static_cast<float>(jsfunc->getParameter("par7float")->getDouble());
+		maxResistance =	static_cast<float>(jsfunc->getParameter("maxResistance")->getDouble());
 	bool makeFire = jsfunc->getParameter("makeFire")->getBool(),
 		destroyBlocks = jsfunc->getParameter("destroyBlocks")->getBool();
 
 
 	if(MCPE_localplayer->level != NULL)
 	{
-		// Explode:		Level, Region, Entity(NULL for none), radius, makeFire, destroyBlocks, idk
-		Level$explode(MCPE_localplayer->level, MCPE_localplayer->region, NULL, Vec3{x, y, z}, radius, makeFire, destroyBlocks, par7float);
+		Level$explode(MCPE_localplayer->level, MCPE_localplayer->region, NULL, Vec3{x, y, z}, radius, makeFire, destroyBlocks, maxResistance);
 	}
 }
 
