@@ -2,21 +2,18 @@ function useItem(x, y, z, itemId, blockId, side)
 {
 	clientMessage("Don't harm the environment!");
 
-	if(Level.getTile(x, y, z) == 19 && Level.getData(x, y, z) == 0)
+	if(blockId == 19 && Level.getData(x, y, z) == 0)
 	{
 		// Damn you Sponge!
 		Level.explode(x, y, z, 5.0, true, true, 0.0);
 	}
-	else
+	else if(itemId == 2)
 	{
-		Level.setTile(x, y, z, 1, 0);
+		clientMessage("This is grass!");
 	}
 
-	Entity.setPositionRelative(0, 0, 3, 0);
-	if(Entity.getPosY(0) > 100 || Entity.getVelY(0) < 0)
-	{
-		Entity.setPosition(0, 0, 256, 0);
-	}
+	clientMessage(Player.getEntity());
+	//Entity.setPosition(Player.getEntity(), 0, 100, 0);
 
 	clientMessage(Level.getWorldName());
 	//clientMessage(Level.getGameMode());
@@ -30,6 +27,6 @@ function useItem(x, y, z, itemId, blockId, side)
 
 function attackHook(attacker, victim)
 {
-	preventDefault();
-	clientMessage("Don't hurt the animals!");
+	// currently this crashes.
+	Entity.setPosition(victim, 0, 100, 0);
 }

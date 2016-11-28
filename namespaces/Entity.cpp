@@ -4,14 +4,13 @@
 #include "../minecraftpe/common.h"
 #include "../minecraftpe/Player.h"
 
+
 Entity* modpe_entityWrapper(uint64_t uniqueID)
 {
-	return MCPE_localplayer; // temporary
-
 	Entity* retval = Level$fetchEntity(MCPE_localplayer->level, uniqueID, false);
 
 	if(!retval)
-		return MCPE_localplayer;
+		retval = MCPE_localplayer; // this is always NULL, for some reason.
 
 	return retval;
 }

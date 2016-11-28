@@ -139,7 +139,7 @@ void registerScriptCalls()
 	interpreter->addNative("function Entity.getVelY(uniqueID)", EntityNS::getVelY, interpreter);
 	interpreter->addNative("function Entity.getVelZ(uniqueID)", EntityNS::getVelZ, interpreter);
 
-	//interpreter->addNative("function Player.getEntity()", PlayerNS::getEntity, interpreter);
+	interpreter->addNative("function Player.getEntity()", PlayerNS::getEntity, interpreter);
 }
 
 
@@ -151,7 +151,7 @@ void initPointers()
 	FLHookSymbol(Level$explode, FLAddress(0x00000000 | 1, 0x1007a9118));
 	FLHookSymbol(BlockSource$setBlockAndData, FLAddress(0x00000000 | 1, 0x10079bc80));
 	FLHookSymbol(BlockSource$getBlockAndData, FLAddress(0x00000000 | 1, 0x10079a1fc));
-	//FLHookSymbol(Entity$getUniqueID, 0x1004D347C);
+	FLHookSymbol(Entity$getUniqueID, FLAddress(0x00000000 | 1, 0x100657960));
 	FLHookSymbol(Level$fetchEntity, FLAddress(0x00000000 | 1, 0x1007a8920));
 	FLHookSymbol(GuiData$addMessage, FLAddress(0x00000000 | 1, 0x100108428));
 

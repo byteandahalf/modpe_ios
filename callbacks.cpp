@@ -9,6 +9,8 @@ struct ItemInstance;
 struct MinecraftClient;
 #include "minecraftpe/common.h"
 #include "minecraftpe/Player.h"
+#include "minecraftpe/ItemInstance.h"
+#include "minecraftpe/Item.h"
 
 
 std::string tostr(int);
@@ -18,8 +20,8 @@ bool (*_CreativeMode$useItemOn)(uintptr_t*, uintptr_t*, ItemInstance&, const Blo
 bool CreativeMode$useItemOn(uintptr_t* self, uintptr_t* player, ItemInstance& itemStack, const BlockPos& pos, signed char side, uintptr_t* vec)
 {
 	int x = pos.x, y = pos.y, z = pos.z;
-	int itemId = 280; //itemStack.item->id;
-	int blockId = 1;
+	int itemId = itemStack.item->itemId;
+	int blockId = BlockSource$getBlockAndData(MCPE_localplayer->region, pos).blockId;
 
 	interpreter->execute("useItem("+tostr(x)+","+tostr(y)+","+tostr(z)+","+tostr(itemId)+","+tostr(blockId)+","+tostr(side)+");");
 
@@ -36,8 +38,8 @@ bool (*_SurvivalMode$useItemOn)(uintptr_t*, uintptr_t*, ItemInstance&, const Blo
 bool SurvivalMode$useItemOn(uintptr_t* self, uintptr_t* player, ItemInstance& itemStack, const BlockPos& pos, signed char side, uintptr_t* vec)
 {
 	int x = pos.x, y = pos.y, z = pos.z;
-	int itemId = 280; //itemStack.item->id;
-	int blockId = 1;
+	int itemId = itemStack.item->itemId;
+	int blockId = BlockSource$getBlockAndData(MCPE_localplayer->region, pos).blockId;
 
 	interpreter->execute("useItem("+tostr(x)+","+tostr(y)+","+tostr(z)+","+tostr(itemId)+","+tostr(blockId)+","+tostr(side)+");");
 
@@ -53,7 +55,7 @@ bool SurvivalMode$useItemOn(uintptr_t* self, uintptr_t* player, ItemInstance& it
 void (*_CreativeMode$attack)(uintptr_t*, Player*, Entity*);
 void CreativeMode$attack(uintptr_t* self, Player* attacker, Entity* victim)
 {
-	interpreter->execute("attackHook(0, 0);");//+tostr64(Entity$getUniqueID(attacker))+","+tostr64(Entity$getUniqueID(victim))+");");
+	interpreter->execute("attackHook("+tostr64(Entity$getUniqueID(attacker))+","+tostr64(Entity$getUniqueID(victim))+");");
 
 	if(PREVENTDEFAULT)
 	{
@@ -67,7 +69,7 @@ void CreativeMode$attack(uintptr_t* self, Player* attacker, Entity* victim)
 void (*_SurvivalMode$attack)(uintptr_t*, Player*, Entity*);
 void SurvivalMode$attack(uintptr_t* self, Player* attacker, Entity* victim)
 {
-	interpreter->execute("attackHook(0, 0);");//+tostr64(Entity$getUniqueID(attacker))+","+tostr64(Entity$getUniqueID(victim))+");");
+	interpreter->execute("attackHook("+tostr64(Entity$getUniqueID(attacker))+","+tostr64(Entity$getUniqueID(victim))+");");
 
 	if(PREVENTDEFAULT)
 	{
