@@ -4,6 +4,7 @@
 #include "TinyJS.h"
 
 #include "externs.h"
+#include "request/ModPESetItemRequest.h"
 
 struct ItemInstance;
 struct MinecraftClient;
@@ -15,6 +16,7 @@ struct MinecraftClient;
 
 std::string tostr(int);
 std::string tostr64(uint64_t);
+
 
 bool (*_CreativeMode$useItemOn)(uintptr_t*, uintptr_t*, ItemInstance*, const BlockPos&, signed char, uintptr_t*);
 bool CreativeMode$useItemOn(uintptr_t* self, uintptr_t* player, ItemInstance* itemStack, const BlockPos& pos, signed char side, uintptr_t* vec)
@@ -107,4 +109,17 @@ LocalPlayer* LocalPlayer$LocalPlayer(LocalPlayer* self, MinecraftClient* client,
 	MCPE_localplayer = self;
 	MCPE_client = client;
 	return _LocalPlayer$LocalPlayer(self, client, level, gametype, networkID, uuid);
+}
+
+void (*_MinecraftClient$onResourcesLoaded)(MinecraftClient*);
+void MinecraftClient$onResourcesLoaded(MinecraftClient* self)
+{
+	_MinecraftClient$onResourcesLoaded(self);
+
+	for(ModPESetItemRequest* request : ModPESetItemRequest::requests)
+	{
+		request->fulfill();
+	}
+
+	ModPESetItemRequest::clearRequests();
 }

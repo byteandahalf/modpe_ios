@@ -38,6 +38,8 @@ extern void (*_SurvivalMode$tick)(uintptr_t*);
 void SurvivalMode$tick(uintptr_t*);
 extern LocalPlayer* (*_LocalPlayer$LocalPlayer)(LocalPlayer*, MinecraftClient*, uintptr_t*, uintptr_t*, uintptr_t*, uint64_t);
 LocalPlayer* LocalPlayer$LocalPlayer(LocalPlayer*, MinecraftClient*, uintptr_t*, uintptr_t*, uintptr_t*, uint64_t);
+extern void (*_MinecraftClient$onResourcesLoaded)(MinecraftClient*);
+void MinecraftClient$onResourcesLoaded(MinecraftClient*);
 /*
 *	ModPE calls
 */
@@ -60,6 +62,7 @@ namespace LevelNS
 	void getTime(CScriptVar*, void*);
 	void setTime(CScriptVar*, void*);
 };
+//Entity
 namespace EntityNS
 {
 	void getVelX(CScriptVar*, void*);
@@ -71,6 +74,7 @@ namespace EntityNS
 	void setPosition(CScriptVar*, void*);
 	void setPositionRelative(CScriptVar*, void*);
 };
+//Player
 namespace PlayerNS
 {
 	void getEntity(CScriptVar*, void*);
@@ -82,6 +86,11 @@ namespace PlayerNS
 	void getInventorySlot(CScriptVar*, void*);
 	void getInventorySlotCount(CScriptVar*, void*);
 	void getInventorySlotData(CScriptVar*, void*);
+};
+//ModPE
+namespace ModPENS
+{
+	void setItem(CScriptVar*, void*);
 };
 
 
@@ -161,6 +170,8 @@ void registerScriptCalls()
 	interpreter->addNative("function Player.getInventorySlot(slotId)", PlayerNS::getInventorySlot, interpreter);
 	interpreter->addNative("function Player.getInventorySlotCount(slotId)", PlayerNS::getInventorySlotCount, interpreter);
 	interpreter->addNative("function Player.getInventorySlotData(slotId)", PlayerNS::getInventorySlotData, interpreter);
+
+	interpreter->addNative("function ModPE.setItem(itemId, texture_name, texture_index, name, stackSize)", ModPENS::setItem, interpreter);
 }
 
 
@@ -178,7 +189,15 @@ void initPointers()
 	FLHookSymbol(PlayerInventoryProxy$getSelectedSlot, FLAddress(0x00000000 | 1, 0x1007168c8));
 	FLHookSymbol(PlayerInventoryProxy$getItem, FLAddress(0x00000000 | 1, 0x100716884));
 	FLHookSymbol(PlayerInventoryProxy$clearSlot, FLAddress(0x00000000 | 1, 0x10071665c));
-	//0x1007a76f0 playSound
+	FLHookSymbol(Item$Item, FLAddress(0x00000000 | 1, 0x10074689c));
+
+	FLHookSymbol(Item$mItems, FLAddress(0x00000000 | 1, 0x1012ae238));
+	FLHookSymbol(Item$mTextureAtlas, FLAddress(0x00000000 | 1, 0x1012ae208));
+
+	//0x1007a76f0 Level::playSound
+	//0x1007487d4 defineItem(const char*, int&)
+	//0x1012ae210 Item::mItemLookupMap
+	//0x10074dc34 map<std::string, std::pair<const std::string, std::unique_ptr<Item>>>::operator[](const std::string&)
 
 	FLHookSymbol(CreativeMode$vtable, FLAddress(0x00000000, 0x1011D7C78));
 	FLHookSymbol(SurvivalMode$vtable, FLAddress(0x00000000, 0x10113DDC0));
@@ -190,6 +209,7 @@ void initPointers()
 	VirtualHook(SurvivalMode$vtable, GAMEMODE_TICK_OFFSET, (void*) &SurvivalMode$tick, (void**) &_SurvivalMode$tick);
 
 	FLHookFunction(FLAddress(0x00000000 | 1, 0x100355e90), (void*) &LocalPlayer$LocalPlayer, (void**) &_LocalPlayer$LocalPlayer);
+	FLHookFunction(FLAddress(0x00000000 | 1, 0x10007ba50), (void*) &MinecraftClient$onResourcesLoaded, (void**) &_MinecraftClient$onResourcesLoaded);
 }
 
 void initInterpreter()

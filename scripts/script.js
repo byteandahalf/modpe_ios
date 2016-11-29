@@ -1,3 +1,5 @@
+ModPE.setItem(511, "apple", 0, "Cool thing.", 30);
+
 function useItem(x, y, z, itemId, blockId, side)
 {
 	clientMessage("Don't harm the environment!");
