@@ -1,6 +1,21 @@
 #include <string>
 #include <sstream>
-#include <stdint.h>
+#include <cstdint>
+#include <cstdlib>
+
+#include "externs.h"
+
+#include "minecraftpe/ItemInstance.h"
+
+ItemInstance* newItemInstance(int itemId, uint8_t count, uint16_t aux)
+{
+	ItemInstance* itemStack = (ItemInstance*) malloc(sizeof(ItemInstance));
+	ItemInstance$fromItem(itemStack, Item$mItems[itemId]);
+	itemStack->count = count;
+	itemStack->aux = aux;
+
+	return itemStack;
+}
 
 std::string tostr(int num)
 {

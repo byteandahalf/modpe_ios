@@ -68,6 +68,9 @@ namespace EntityNS
 	void getVelX(CScriptVar*, void*);
 	void getVelY(CScriptVar*, void*);
 	void getVelZ(CScriptVar*, void*);
+	void setVelX(CScriptVar*, void*);
+	void setVelY(CScriptVar*, void*);
+	void setVelZ(CScriptVar*, void*);
 	void getPosX(CScriptVar*, void*);
 	void getPosY(CScriptVar*, void*);
 	void getPosZ(CScriptVar*, void*);
@@ -83,6 +86,8 @@ namespace PlayerNS
 	void getCarriedItem(CScriptVar*, void*);
 	void getCarriedItemCount(CScriptVar*, void*);
 	void getCarriedItemData(CScriptVar*, void*);
+	void addItemInventory(CScriptVar*, void*);
+	void setInventorySlot(CScriptVar*, void*);
 	void getInventorySlot(CScriptVar*, void*);
 	void getInventorySlotCount(CScriptVar*, void*);
 	void getInventorySlotData(CScriptVar*, void*);
@@ -152,14 +157,17 @@ void registerScriptCalls()
 	interpreter->addNative("function Level.getTime()", LevelNS::getTime, interpreter);
 	interpreter->addNative("function Level.setTime(time)", LevelNS::setTime, interpreter);
 
-	interpreter->addNative("function Entity.getPosX(uniqueID)", EntityNS::getPosX, interpreter);
-	interpreter->addNative("function Entity.getPosY(uniqueID)", EntityNS::getPosY, interpreter);
-	interpreter->addNative("function Entity.getPosZ(uniqueID)", EntityNS::getPosZ, interpreter);
+	interpreter->addNative("function Entity.getX(uniqueID)", EntityNS::getPosX, interpreter);
+	interpreter->addNative("function Entity.getY(uniqueID)", EntityNS::getPosY, interpreter);
+	interpreter->addNative("function Entity.getZ(uniqueID)", EntityNS::getPosZ, interpreter);
 	interpreter->addNative("function Entity.setPosition(uniqueID, x, y, z)", EntityNS::setPosition, interpreter);
 	interpreter->addNative("function Entity.setPositionRelative(uniqueID, x, y, z)", EntityNS::setPositionRelative, interpreter);
 	interpreter->addNative("function Entity.getVelX(uniqueID)", EntityNS::getVelX, interpreter);
 	interpreter->addNative("function Entity.getVelY(uniqueID)", EntityNS::getVelY, interpreter);
 	interpreter->addNative("function Entity.getVelZ(uniqueID)", EntityNS::getVelZ, interpreter);
+	interpreter->addNative("function Entity.setVelX(uniqueID, velocity)", EntityNS::setVelX, interpreter);
+	interpreter->addNative("function Entity.setVelY(uniqueID, velocity)", EntityNS::setVelY, interpreter);
+	interpreter->addNative("function Entity.setVelZ(uniqueID, velocity)", EntityNS::setVelZ, interpreter);
 
 	interpreter->addNative("function Player.getEntity()", PlayerNS::getEntity, interpreter);
 	interpreter->addNative("function Player.clearInventorySlot(slotId)", PlayerNS::clearInventorySlot, interpreter);
@@ -167,6 +175,8 @@ void registerScriptCalls()
 	interpreter->addNative("function Player.getCarriedItem()", PlayerNS::getCarriedItem, interpreter);
 	interpreter->addNative("function Player.getCarriedItemCount()", PlayerNS::getCarriedItemCount, interpreter);
 	interpreter->addNative("function Player.getCarriedItemData()", PlayerNS::getCarriedItemData, interpreter);
+	interpreter->addNative("function Player.addItemInventory(itemId, count, aux)", PlayerNS::addItemInventory, interpreter);
+	//interpreter->addNative("function Player.setInventorySlot(slotId, itemId, count, aux)", PlayerNS::setInventorySlot, interpreter);
 	interpreter->addNative("function Player.getInventorySlot(slotId)", PlayerNS::getInventorySlot, interpreter);
 	interpreter->addNative("function Player.getInventorySlotCount(slotId)", PlayerNS::getInventorySlotCount, interpreter);
 	interpreter->addNative("function Player.getInventorySlotData(slotId)", PlayerNS::getInventorySlotData, interpreter);
@@ -188,12 +198,16 @@ void initPointers()
 	FLHookSymbol(GuiData$addMessage, FLAddress(0x00000000 | 1, 0x100108428));
 	FLHookSymbol(PlayerInventoryProxy$getSelectedSlot, FLAddress(0x00000000 | 1, 0x1007168c8));
 	FLHookSymbol(PlayerInventoryProxy$getItem, FLAddress(0x00000000 | 1, 0x100716884));
+	FLHookSymbol(PlayerInventoryProxy$add, FLAddress(0x00000000 | 1, 0x1007161fc));
+	FLHookSymbol(PlayerInventoryProxy$replaceSlot, FLAddress(0x00000000 | 1, 0x100716688));
 	FLHookSymbol(PlayerInventoryProxy$clearSlot, FLAddress(0x00000000 | 1, 0x10071665c));
 	FLHookSymbol(Item$Item, FLAddress(0x00000000 | 1, 0x10074689c));
+	FLHookSymbol(ItemInstance$fromItem, FLAddress(0x00000000 | 1, 0x1007568e8));
 
 	FLHookSymbol(Item$mItems, FLAddress(0x00000000 | 1, 0x1012ae238));
 	FLHookSymbol(Item$mTextureAtlas, FLAddress(0x00000000 | 1, 0x1012ae208));
 
+	//0x1007160fc selectSlot(int, ContainerID)
 	//0x1007a76f0 Level::playSound
 	//0x1007487d4 defineItem(const char*, int&)
 	//0x1012ae210 Item::mItemLookupMap

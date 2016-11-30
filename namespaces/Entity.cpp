@@ -50,6 +50,48 @@ void getVelZ(CScriptVar* jsfunc, void*)
 
 	jsfunc->setReturnVar(new CScriptVar(getVelocity(entity).z));
 }
+void setVelX(CScriptVar* jsfunc, void*)
+{
+	Entity* entity = modpe_entityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
+
+	uintptr_t** vtable = *((uintptr_t***) entity);
+	const Vec3& (*getVelocity)(Entity*) = (const Vec3& (*)(Entity*)) vtable[13];
+	void (*lerpMotion)(Entity*, const Vec3&) = (void (*)(Entity*, const Vec3&)) vtable[21];
+
+	float velX = static_cast<float>(jsfunc->getParameter("velocity")->getDouble());
+	float velY = getVelocity(entity).y;
+	float velZ = getVelocity(entity).z;
+
+	lerpMotion(entity, Vec3{velX, velY, velZ});
+}
+void setVelY(CScriptVar* jsfunc, void*)
+{
+	Entity* entity = modpe_entityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
+
+	uintptr_t** vtable = *((uintptr_t***) entity);
+	const Vec3& (*getVelocity)(Entity*) = (const Vec3& (*)(Entity*)) vtable[13];
+	void (*lerpMotion)(Entity*, const Vec3&) = (void (*)(Entity*, const Vec3&)) vtable[21];
+
+	float velX = getVelocity(entity).x;
+	float velY = static_cast<float>(jsfunc->getParameter("velocity")->getDouble());
+	float velZ = getVelocity(entity).z;
+
+	lerpMotion(entity, Vec3{velX, velY, velZ});
+}
+void setVelZ(CScriptVar* jsfunc, void*)
+{
+	Entity* entity = modpe_entityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
+
+	uintptr_t** vtable = *((uintptr_t***) entity);
+	const Vec3& (*getVelocity)(Entity*) = (const Vec3& (*)(Entity*)) vtable[13];
+	void (*lerpMotion)(Entity*, const Vec3&) = (void (*)(Entity*, const Vec3&)) vtable[21];
+
+	float velX = getVelocity(entity).x;
+	float velY = getVelocity(entity).y;
+	float velZ = static_cast<float>(jsfunc->getParameter("velocity")->getDouble());
+
+	lerpMotion(entity, Vec3{velX, velY, velZ});
+}
 
 void getPosX(CScriptVar* jsfunc, void*)
 {
@@ -78,7 +120,6 @@ void getPosZ(CScriptVar* jsfunc, void*)
 
 	jsfunc->setReturnVar(new CScriptVar(getPos(entity).z));
 }
-
 void setPosition(CScriptVar* jsfunc, void*)
 {
 	Entity* entity = modpe_entityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));

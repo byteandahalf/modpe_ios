@@ -40,7 +40,10 @@ extern Entity* (*Level$fetchEntity)(Level*, uint64_t, bool);
 extern void (*GuiData$addMessage)(GuiData*, const std::string&, const std::string&, int, bool);
 extern InventorySlot (*PlayerInventoryProxy$getSelectedSlot)(PlayerInventoryProxy*);
 extern const ItemInstance& (*PlayerInventoryProxy$getItem)(PlayerInventoryProxy*, int, int);
+extern void (*PlayerInventoryProxy$add)(PlayerInventoryProxy*, ItemInstance&, bool);
+extern void (*PlayerInventoryProxy$replaceSlot)(PlayerInventoryProxy*, int, const ItemInstance&);
 extern void (*PlayerInventoryProxy$clearSlot)(PlayerInventoryProxy*, int, int);
 extern Item* (*Item$Item)(Item*, const std::string&, short);
+extern ItemInstance* (*ItemInstance$fromItem)(ItemInstance*, Item*);
 
 #endif

@@ -23,13 +23,17 @@ bool CreativeMode$useItemOn(uintptr_t* self, uintptr_t* player, ItemInstance* it
 {
 	int x = pos.x, y = pos.y, z = pos.z;
 	int itemId = 0;
-	if(itemStack && itemStack->item)
+	int itemData = 0;
+	if(itemStack != NULL && itemStack->item != NULL)
 	{
 		itemId = itemStack->item->itemId;
+		itemData = itemStack->aux;
 	}
-	int blockId = BlockSource$getBlockAndData(MCPE_localplayer->region, pos).blockId;
+	FullBlock fullBlock = BlockSource$getBlockAndData(MCPE_localplayer->region, pos);
+	int blockId = fullBlock.blockId;
+	int blockData = fullBlock.data;
 
-	interpreter->execute("useItem("+tostr(x)+","+tostr(y)+","+tostr(z)+","+tostr(itemId)+","+tostr(blockId)+","+tostr(side)+");");
+	interpreter->execute("useItem("+tostr(x)+","+tostr(y)+","+tostr(z)+","+tostr(itemId)+","+tostr(blockId)+","+tostr(side)+","+tostr(itemData)+","+tostr(blockData)+");");
 
 	if(PREVENTDEFAULT)
 	{
@@ -44,13 +48,17 @@ bool SurvivalMode$useItemOn(uintptr_t* self, uintptr_t* player, ItemInstance* it
 {
 	int x = pos.x, y = pos.y, z = pos.z;
 	int itemId = 0;
-	if(itemStack && itemStack->item)
+	int itemData = 0;
+	if(itemStack != NULL && itemStack->item != NULL)
 	{
 		itemId = itemStack->item->itemId;
+		itemData = itemStack->aux;
 	}
-	int blockId = BlockSource$getBlockAndData(MCPE_localplayer->region, pos).blockId;
+	FullBlock fullBlock = BlockSource$getBlockAndData(MCPE_localplayer->region, pos);
+	int blockId = fullBlock.blockId;
+	int blockData = fullBlock.data;
 
-	interpreter->execute("useItem("+tostr(x)+","+tostr(y)+","+tostr(z)+","+tostr(itemId)+","+tostr(blockId)+","+tostr(side)+");");
+	interpreter->execute("useItem("+tostr(x)+","+tostr(y)+","+tostr(z)+","+tostr(itemId)+","+tostr(blockId)+","+tostr(side)+","+tostr(itemData)+","+tostr(blockData)+");");
 
 	if(PREVENTDEFAULT)
 	{

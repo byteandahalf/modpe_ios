@@ -1,30 +1,8 @@
-ModPE.setItem(511, "apple", 0, "Cool thing.", 30);
+//ModPE.setItem(511, "apple", 0, "Cool thing.", 30);
 
-function useItem(x, y, z, itemId, blockId, side)
+function useItem(x, y, z, itemId, blockId, side, itemData, blockData)
 {
-	clientMessage("Don't harm the environment!");
-
-	if(blockId == 19 && Level.getData(x, y, z) == 0)
-	{
-		// Damn you Sponge!
-		Level.explode(x, y, z, 5.0, true, true, 0.0);
-	}
-	else if(itemId == 2)
-	{
-		clientMessage("This is grass!");
-	}
-
-	clientMessage(Player.getEntity());
-	Entity.setPositionRelative(Player.getEntity(), 0, 10, 0);
-
-	clientMessage(Level.getWorldName());
-	//clientMessage(Level.getGameMode());
-	clientMessage(Level.getDifficulty());
-	clientMessage(Level.getTime());
-
-	//Level.setGameMode(1);
-	Level.setDifficulty(0);
-	Level.setTime(1000);
+	Player.addItemInventory(19, 1, 0);
 }
 
 function attackHook(attacker, victim)
@@ -34,9 +12,10 @@ function attackHook(attacker, victim)
 		Player.clearInventorySlot(Player.getSelectedSlotId());
 		clientMessage("Wet sponge!");
 	}
-	clientMessage(Entity.getPosY(attacker));
-	Entity.setPosition(victim, 0, 100, 0);
+	clientMessage("Dude.");
+	Entity.setVelX(victim, 3.0);
 	Entity.setPositionRelative(attacker, 1, 1, 1);
+	Player.setInventorySlot(Player.getSelectedSlotId(), 256, 30, 100);
 }
 
 var timer = 300;
