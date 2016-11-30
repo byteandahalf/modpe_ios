@@ -9,6 +9,11 @@
 
 ItemInstance* newItemInstance(int itemId, uint8_t count, uint16_t aux)
 {
+	if(Item$mItems[itemId] == NULL)
+	{
+		return NULL;
+	}
+
 	ItemInstance* itemStack = (ItemInstance*) malloc(sizeof(ItemInstance));
 	ItemInstance$fromItem(itemStack, Item$mItems[itemId]);
 	itemStack->count = count;
