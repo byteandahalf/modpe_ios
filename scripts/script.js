@@ -1,8 +1,7 @@
-//ModPE.setItem(511, "apple", 0, "Cool thing.", 30);
-
 function useItem(x, y, z, itemId, blockId, side, itemData, blockData)
 {
-	Player.addItemInventory(19, 1, 0);
+	//ModPE.setItem(511, "apple", 0, "Cool thing.", 30);
+	Player.setInventorySlot(Player.getSelectedSlotId(), 256, 31, 100);
 }
 
 function attackHook(attacker, victim)

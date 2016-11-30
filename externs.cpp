@@ -42,6 +42,8 @@ void (*GuiData$addMessage)(GuiData*, const std::string&, const std::string&, int
 InventorySlot (*PlayerInventoryProxy$getSelectedSlot)(PlayerInventoryProxy*);
 const ItemInstance& (*PlayerInventoryProxy$getItem)(PlayerInventoryProxy*, int, int);
 void (*PlayerInventoryProxy$add)(PlayerInventoryProxy*, ItemInstance&, bool);
+int (*PlayerInventoryProxy$getLinkedSlotsCount)(PlayerInventoryProxy*);
+int (*PlayerInventoryProxy$getLinkedSlot)(PlayerInventoryProxy*, int);
 void (*PlayerInventoryProxy$replaceSlot)(PlayerInventoryProxy*, int, const ItemInstance&);
 void (*PlayerInventoryProxy$clearSlot)(PlayerInventoryProxy*, int, int);
 Item* (*Item$Item)(Item*, const std::string&, short);

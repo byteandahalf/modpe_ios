@@ -176,7 +176,7 @@ void registerScriptCalls()
 	interpreter->addNative("function Player.getCarriedItemCount()", PlayerNS::getCarriedItemCount, interpreter);
 	interpreter->addNative("function Player.getCarriedItemData()", PlayerNS::getCarriedItemData, interpreter);
 	interpreter->addNative("function Player.addItemInventory(itemId, count, aux)", PlayerNS::addItemInventory, interpreter);
-	//interpreter->addNative("function Player.setInventorySlot(slotId, itemId, count, aux)", PlayerNS::setInventorySlot, interpreter);
+	interpreter->addNative("function Player.setInventorySlot(slotId, itemId, count, aux)", PlayerNS::setInventorySlot, interpreter);
 	interpreter->addNative("function Player.getInventorySlot(slotId)", PlayerNS::getInventorySlot, interpreter);
 	interpreter->addNative("function Player.getInventorySlotCount(slotId)", PlayerNS::getInventorySlotCount, interpreter);
 	interpreter->addNative("function Player.getInventorySlotData(slotId)", PlayerNS::getInventorySlotData, interpreter);
@@ -199,13 +199,15 @@ void initPointers()
 	FLHookSymbol(PlayerInventoryProxy$getSelectedSlot, FLAddress(0x00000000 | 1, 0x1007168c8));
 	FLHookSymbol(PlayerInventoryProxy$getItem, FLAddress(0x00000000 | 1, 0x100716884));
 	FLHookSymbol(PlayerInventoryProxy$add, FLAddress(0x00000000 | 1, 0x1007161fc));
+	FLHookSymbol(PlayerInventoryProxy$getLinkedSlotsCount, FLAddress(0x00000000 | 1, 0x1007161f4));
+	FLHookSymbol(PlayerInventoryProxy$getLinkedSlot, FLAddress(0x00000000 | 1, 0x1007161c4));
 	FLHookSymbol(PlayerInventoryProxy$replaceSlot, FLAddress(0x00000000 | 1, 0x100716688));
 	FLHookSymbol(PlayerInventoryProxy$clearSlot, FLAddress(0x00000000 | 1, 0x10071665c));
 	FLHookSymbol(Item$Item, FLAddress(0x00000000 | 1, 0x10074689c));
 	FLHookSymbol(ItemInstance$fromItem, FLAddress(0x00000000 | 1, 0x1007568e8));
 
-	FLHookSymbol(Item$mItems, FLAddress(0x00000000 | 1, 0x1012ae238));
-	FLHookSymbol(Item$mTextureAtlas, FLAddress(0x00000000 | 1, 0x1012ae208));
+	FLHookSymbol(Item$mItems, FLAddress(0x00000000, 0x1012ae238));
+	FLHookSymbol(Item$mTextureAtlas, FLAddress(0x00000000, 0x1012ae208));
 
 	//0x1007160fc selectSlot(int, ContainerID)
 	//0x1007a76f0 Level::playSound

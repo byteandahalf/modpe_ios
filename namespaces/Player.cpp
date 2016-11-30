@@ -76,11 +76,15 @@ void setInventorySlot(CScriptVar* jsfunc, void*)
 	int count = jsfunc->getParameter("count")->getInt();
 	int aux = jsfunc->getParameter("aux")->getInt();
 
-	ItemInstance* itemStack = newItemInstance(itemId, count, aux);
-	if(itemStack != NULL)
+	if(((slotId > PlayerInventoryProxy$getLinkedSlotsCount(MCPE_localplayer->inventory)) && slotId >= 0)
+		|| (slotId = PlayerInventoryProxy$getLinkedSlot(MCPE_localplayer->inventory, slotId)) >= 0)
 	{
-		PlayerInventoryProxy$replaceSlot(MCPE_localplayer->inventory, slotId, *itemStack);
-		delete itemStack;
+		ItemInstance* itemStack = newItemInstance(itemId, count, aux);
+		if(itemStack != NULL)
+		{
+			PlayerInventoryProxy$replaceSlot(MCPE_localplayer->inventory, slotId, *itemStack);
+			delete itemStack;
+		}
 	}
 }
 void getInventorySlot(CScriptVar* jsfunc, void*)
