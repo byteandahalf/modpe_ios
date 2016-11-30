@@ -4,7 +4,7 @@
 #include "TinyJS.h"
 
 #include "externs.h"
-#include "request/ModPESetItemRequest.h"
+#include "queue/DefineItemQueue.h"
 
 struct ItemInstance;
 struct MinecraftClient;
@@ -124,10 +124,6 @@ void MinecraftClient$onResourcesLoaded(MinecraftClient* self)
 {
 	_MinecraftClient$onResourcesLoaded(self);
 
-	for(ModPESetItemRequest* request : ModPESetItemRequest::requests)
-	{
-		request->fulfill();
-	}
-
-	ModPESetItemRequest::clearRequests();
+	ITEMS_CREATED = true;
+	DefineItemQueue::doTasks();
 }

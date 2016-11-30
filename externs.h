@@ -24,6 +24,7 @@ struct TextureAtlas;
 extern CTinyJS* interpreter;
 
 extern bool PREVENTDEFAULT;
+extern bool ITEMS_CREATED;
 
 extern LocalPlayer* MCPE_localplayer;
 extern MinecraftClient* MCPE_client;

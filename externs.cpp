@@ -23,6 +23,7 @@ CTinyJS* interpreter;
 
 //various helpers
 bool PREVENTDEFAULT = false;
+bool ITEMS_CREATED = false;
 
 //pointers
 LocalPlayer* MCPE_localplayer;

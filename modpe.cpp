@@ -181,7 +181,7 @@ void registerScriptCalls()
 	interpreter->addNative("function Player.getInventorySlotCount(slotId)", PlayerNS::getInventorySlotCount, interpreter);
 	interpreter->addNative("function Player.getInventorySlotData(slotId)", PlayerNS::getInventorySlotData, interpreter);
 
-	interpreter->addNative("function ModPE.setItem(itemId, texture_name, texture_index, name, stackSize)", ModPENS::setItem, interpreter);
+	interpreter->addNative("function ModPE.setItem(itemId, icon_name, icon_index, name, stackSize)", ModPENS::setItem, interpreter);
 }
 
 
