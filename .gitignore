@@ -1,5 +1,6 @@
 .DS_Store
 build/
+afc/
 *.o
 *.deb
 *.dylib

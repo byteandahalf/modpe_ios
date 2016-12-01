@@ -2,6 +2,7 @@
 #define __MODPEQUEUE_H
 
 #include <vector>
+#include <memory>
 
 enum class TaskType: int
 {

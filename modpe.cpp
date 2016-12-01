@@ -99,7 +99,11 @@ namespace ModPENS
 {
 	void setItem(CScriptVar*, void*);
 };
-
+//Item
+namespace ItemNS
+{
+	void setMaxStackSize(CScriptVar*, void*);
+}
 
 void ModPE_initScripts()
 {
@@ -185,6 +189,8 @@ void registerScriptCalls()
 	interpreter->addNative("function Player.getInventorySlotData(slotId)", PlayerNS::getInventorySlotData, interpreter);
 
 	interpreter->addNative("function ModPE.setItem(itemId, icon_name, icon_index, name, stackSize)", ModPENS::setItem, interpreter);
+
+	interpreter->addNative("function Item.setMaxStackSize(itemId, stackSize)", ItemNS::setMaxStackSize, interpreter);
 }
 
 

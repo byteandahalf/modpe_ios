@@ -6,7 +6,7 @@ std::vector<const ModPETask*> ModPEQueue::queue;
 std::mutex queueMutex;
 void ModPEQueue::queueTask(const ModPETask* task)
 {
-	queue.push_back(task);
+	//queue.push_back(task);
 }
 
 void ModPEQueue::doTasks(TaskType type)

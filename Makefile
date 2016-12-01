@@ -111,6 +111,14 @@ install: $(DEB)
 
 .PHONY: install
 
+### Offline install rules ###
+
+offline:
+	@echo 'No WiFi to SSH: Using afc instead'
+	$(_v)sudo afc/afcclient put ./modpe.deb /modpe.deb
+
+.PHONY: offline
+
 ### Clean rules ###
 
 clean:
@@ -127,7 +135,7 @@ clean:
 	$(_v)mkdir -p $* && touch $@
 
 # deploys test script
-deploy:
+deploy: $(OFFLINE)
 	scp scripts/script.js root@$(DEVICE):/var/mobile/modpe/
 
 .PHONY: deploy
