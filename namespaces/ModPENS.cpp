@@ -1,9 +1,12 @@
 #include "../TinyJS.h"
 
 #include "../externs.h"
-#include "../queue/DefineItemQueue.h"
+#include "../queue/SetItemIconTask.h"
+
+#include "../minecraftpe/Item.h"
 
 #include <string>
+#include <cstdlib>
 
 namespace ModPENS
 {
@@ -15,6 +18,20 @@ void setItem(CScriptVar* jsfunc, void*)
 	std::string name = jsfunc->getParameter("name")->getString();
 	int stackSize = jsfunc->getParameter("stackSize")->getInt();
 
-	DefineItemQueue::QueueOrImmediateItemCreation(itemId, icon_name, icon_index, name, stackSize);
+	Item* myItemPtr = (Item*) malloc(sizeof(Item));
+	Item$Item(myItemPtr, name, itemId - 0x100);
+	myItemPtr->maxStackSize = stackSize;
+
+	Item$mItems[itemId] = myItemPtr;
+
+	if(!GRAPHICS_LOADED)
+	{
+		ModPEQueue::queueTask(new SetItemIconTask(itemId, icon_name, icon_index));
+	}
+	else
+	{
+		void (*setIcon)(Item*, const std::string, int) = (void (*)(Item*, const std::string, int))((uintptr_t***) myItemPtr)[0][2];
+		setIcon(myItemPtr, icon_name, icon_index);
+	}
 }
 };

@@ -38,6 +38,8 @@ extern void (*_SurvivalMode$tick)(uintptr_t*);
 void SurvivalMode$tick(uintptr_t*);
 extern LocalPlayer* (*_LocalPlayer$LocalPlayer)(LocalPlayer*, MinecraftClient*, uintptr_t*, uintptr_t*, uintptr_t*, uint64_t);
 LocalPlayer* LocalPlayer$LocalPlayer(LocalPlayer*, MinecraftClient*, uintptr_t*, uintptr_t*, uintptr_t*, uint64_t);
+extern void (*_MinecraftClient$update)(MinecraftClient*);
+void MinecraftClient$update(MinecraftClient*);
 extern void (*_MinecraftClient$onResourcesLoaded)(MinecraftClient*);
 void MinecraftClient$onResourcesLoaded(MinecraftClient*);
 /*
@@ -99,8 +101,9 @@ namespace ModPENS
 };
 
 
-void runTestScript()
+void ModPE_initScripts()
 {
+	// currently just loads a test script
 	const char* script = "var/mobile/modpe/script.js";
 
 	struct stat results;
@@ -207,8 +210,8 @@ void initPointers()
 	FLHookSymbol(ItemInstance$fromItem, FLAddress(0x00000000 | 1, 0x1007568e8));
 
 	FLHookSymbol(Item$mItems, FLAddress(0x00000000, 0x1012ae238));
-	FLHookSymbol(Item$mTextureAtlas, FLAddress(0x00000000, 0x1012ae208));
 
+	//0x1012ae208 Item::mTextureAtlas
 	//0x1007160fc selectSlot(int, ContainerID)
 	//0x1007a76f0 Level::playSound
 	//0x1007487d4 defineItem(const char*, int&)
@@ -225,6 +228,7 @@ void initPointers()
 	VirtualHook(SurvivalMode$vtable, GAMEMODE_TICK_OFFSET, (void*) &SurvivalMode$tick, (void**) &_SurvivalMode$tick);
 
 	FLHookFunction(FLAddress(0x00000000 | 1, 0x100355e90), (void*) &LocalPlayer$LocalPlayer, (void**) &_LocalPlayer$LocalPlayer);
+	FLHookFunction(FLAddress(0x00000000 | 1, 0x10008182c), (void*) &MinecraftClient$update, (void**) &_MinecraftClient$update);
 	FLHookFunction(FLAddress(0x00000000 | 1, 0x10007ba50), (void*) &MinecraftClient$onResourcesLoaded, (void**) &_MinecraftClient$onResourcesLoaded);
 }
 
@@ -242,5 +246,6 @@ MSInitialize // called when the process is loaded into MCPE
 {
 	initInterpreter();
 
-	runTestScript();
+	// Schedules scripts to load on the first MinecraftClient update
+	SCRIPTS_NEED_INIT = true;
 }

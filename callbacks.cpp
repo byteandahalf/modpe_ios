@@ -1,10 +1,7 @@
-#include <string>
-#include <cstdio>
-
 #include "TinyJS.h"
 
 #include "externs.h"
-#include "queue/DefineItemQueue.h"
+#include "queue/ModPEQueue.h"
 
 struct ItemInstance;
 struct MinecraftClient;
@@ -13,7 +10,10 @@ struct MinecraftClient;
 #include "minecraftpe/ItemInstance.h"
 #include "minecraftpe/Item.h"
 
+#include <string>
+#include <cstdio>
 
+void ModPE_initScripts();
 std::string tostr(int);
 std::string tostr64(uint64_t);
 
@@ -29,6 +29,7 @@ bool CreativeMode$useItemOn(uintptr_t* self, uintptr_t* player, ItemInstance* it
 		itemId = itemStack->item->itemId;
 		itemData = itemStack->aux;
 	}
+
 	FullBlock fullBlock = BlockSource$getBlockAndData(MCPE_localplayer->region, pos);
 	int blockId = fullBlock.blockId;
 	int blockData = fullBlock.data;
@@ -103,12 +104,12 @@ void CreativeMode$tick(uintptr_t* self)
 
 	_CreativeMode$tick(self);
 }
-void (*_SurvivalMode$tick)(uintptr_t);
+void (*_SurvivalMode$tick)(uintptr_t*);
 void SurvivalMode$tick(uintptr_t* self)
 {
 	interpreter->execute("modTick();");
 
-	_CreativeMode$tick(self);
+	_SurvivalMode$tick(self);
 }
 
 LocalPlayer* (*_LocalPlayer$LocalPlayer)(LocalPlayer*, MinecraftClient*, uintptr_t*, uintptr_t*, uintptr_t*, uint64_t);
@@ -119,11 +120,22 @@ LocalPlayer* LocalPlayer$LocalPlayer(LocalPlayer* self, MinecraftClient* client,
 	return _LocalPlayer$LocalPlayer(self, client, level, gametype, networkID, uuid);
 }
 
+void (*_MinecraftClient$update)(MinecraftClient*);
+void MinecraftClient$update(MinecraftClient* self)
+{
+	_MinecraftClient$update(self);
+	if(SCRIPTS_NEED_INIT)
+	{
+		SCRIPTS_NEED_INIT = false;
+		ModPE_initScripts();
+	}
+}
+
 void (*_MinecraftClient$onResourcesLoaded)(MinecraftClient*);
 void MinecraftClient$onResourcesLoaded(MinecraftClient* self)
 {
 	_MinecraftClient$onResourcesLoaded(self);
 
-	ITEMS_CREATED = true;
-	DefineItemQueue::doTasks();
+	GRAPHICS_LOADED = true;
+	ModPEQueue::doTasks(TaskType::TASK_SETICON);
 }

@@ -23,7 +23,8 @@ CTinyJS* interpreter;
 
 //various helpers
 bool PREVENTDEFAULT = false;
-bool ITEMS_CREATED = false;
+bool GRAPHICS_LOADED = false;
+bool SCRIPTS_NEED_INIT;
 
 //pointers
 LocalPlayer* MCPE_localplayer;
@@ -31,7 +32,6 @@ MinecraftClient* MCPE_client;
 uintptr_t** CreativeMode$vtable;
 uintptr_t** SurvivalMode$vtable;
 Item** Item$mItems;
-std::shared_ptr<TextureAtlas>* Item$mTextureAtlas;
 
 //function pointers
 void (*Level$explode)(Level*, BlockSource*, Entity*, const Vec3&, float, bool, bool, float);

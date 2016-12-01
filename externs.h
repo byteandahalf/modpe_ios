@@ -24,14 +24,14 @@ struct TextureAtlas;
 extern CTinyJS* interpreter;
 
 extern bool PREVENTDEFAULT;
-extern bool ITEMS_CREATED;
+extern bool GRAPHICS_LOADED;
+extern bool SCRIPTS_NEED_INIT;
 
 extern LocalPlayer* MCPE_localplayer;
 extern MinecraftClient* MCPE_client;
 extern uintptr_t** CreativeMode$vtable;
 extern uintptr_t** SurvivalMode$vtable;
 extern Item** Item$mItems;
-extern std::shared_ptr<TextureAtlas>* Item$mTextureAtlas;
 
 extern void (*Level$explode)(Level*, BlockSource*, Entity*, const Vec3&, float, bool, bool, float);
 extern bool (*BlockSource$setBlockAndData)(BlockSource*, int, int, int, FullBlock, int);
