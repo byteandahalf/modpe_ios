@@ -6,16 +6,12 @@ std::vector<const ModPETask*> ModPEQueue::queue;
 std::mutex queueMutex;
 void ModPEQueue::queueTask(const ModPETask* task)
 {
-	if(queueMutex.try_lock())
-	{
-		// still crashing lol
-		//queue.push_back(task);
-		queueMutex.unlock();
-	}
+	queue.push_back(task);
 }
 
 void ModPEQueue::doTasks(TaskType type)
 {
+	// This doesn't work due to what I can only assume to be a threading issue with std::vector
 	typedef std::vector<const ModPETask*>::iterator task_iterator;
 	for(task_iterator it = queue.begin(); it != queue.end(); it++)
 	{
@@ -24,7 +20,8 @@ void ModPEQueue::doTasks(TaskType type)
 		{
 			task->doTask();
 			delete task;
-			queue.erase(it);
+			// crashes
+			//queue.erase(it);
 		}
 	}
 }
