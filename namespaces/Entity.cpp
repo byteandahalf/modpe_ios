@@ -6,7 +6,8 @@
 
 #include <string>
 
-uint64_t strToU64(const std::string&);
+std::string tostr64(uint64_t);
+ItemInstance* newItemInstance(int, uint8_t, uint16_t);
 
 
 Entity* modpe_entityWrapper(uint64_t uniqueID)
@@ -19,9 +20,27 @@ Entity* modpe_entityWrapper(uint64_t uniqueID)
 	return retval;
 }
 
+bool canAddRider_hack()
+{
+	return true;
+}
 
 namespace EntityNS
 {
+void getEntityTypeId(CScriptVar* jsfunc, void*)
+{
+	Entity* entity = modpe_entityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
+	int (*getEntityTypeId)(Entity*) = (int (*)(Entity*))((uintptr_t***) entity)[0][97];
+
+	jsfunc->setReturnVar(new CScriptVar(getEntityTypeId(entity)));
+}
+void remove(CScriptVar* jsfunc, void*)
+{
+	Entity* entity = modpe_entityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
+
+	void (*remove)(Entity*) = (void (*)(Entity*))((uintptr_t***) entity)[0][8];
+	remove(entity);
+}
 void getVelX(CScriptVar* jsfunc, void*)
 {
 	Entity* entity = modpe_entityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
@@ -146,5 +165,56 @@ void setPositionRelative(CScriptVar* jsfunc, void*)
 		z = 	static_cast<float>(jsfunc->getParameter("z")->getDouble()) + getPos(entity).z;
 
 	setPos(entity, Vec3{x, y, z});
+}
+void setFireTicks(CScriptVar* jsfunc, void*)
+{
+	Entity* entity = modpe_entityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
+	int ticks = jsfunc->getParameter("ticks")->getInt();
+
+	void (*setOnFire)(Entity*, int) = (void (*)(Entity*, int))((uintptr_t***) entity)[0][101];
+	setOnFire(entity, ticks);
+}
+void rideAnimal(CScriptVar* jsfunc, void*)
+{
+	Entity* rider = modpe_entityWrapper(strToU64(jsfunc->getParameter("rider")->getString()));
+	Entity* ride = modpe_entityWrapper(strToU64(jsfunc->getParameter("ride")->getString()));
+
+	void (*stopRiding)(Entity*, bool, bool) = (void (*)(Entity*, bool, bool))((uintptr_t***) rider)[0][120];
+	void (*startRiding)(Entity*, Entity*) = (void (*)(Entity*, Entity*))((uintptr_t***) rider)[0][26];
+	uintptr_t** rideVtable = ((uintptr_t***) ride)[0];
+	bool (*canAddRider_orig)(Entity*, Entity*) = (bool (*)(Entity*, Entity*)) rideVtable[114];
+
+	if(!canAddRider_orig(ride, rider))
+	{
+		// If this Entity cannot be ridden, then YES IT CAN BECAUSE I SAID SO
+		rideVtable[114] = (uintptr_t*) &canAddRider_hack;
+		startRiding(rider, ride);
+		rideVtable[114] = (uintptr_t*) canAddRider_orig;
+	}
+	else
+	{
+		startRiding(rider, ride);
+	}
+}
+void setCarriedItem(CScriptVar* jsfunc, void*)
+{
+	int itemId = jsfunc->getParameter("itemId")->getInt(),
+		count = jsfunc->getParameter("count")->getInt(),
+		aux = jsfunc->getParameter("aux")->getInt();
+
+	Entity* entity = modpe_entityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
+	ItemInstance* (*getCarriedItem)(Entity*) = (ItemInstance* (*)(Entity*))((uintptr_t***) entity)[0][184];
+
+	ItemInstance* ptr_to_carried = getCarriedItem(entity);
+	if(ptr_to_carried == NULL)
+	{
+		// Not Player or HumanoidMonster
+		return;
+	}
+
+	ItemInstance* new_carried = newItemInstance(itemId, count, aux);
+
+	ItemInstance$operator_equals(ptr_to_carried, *new_carried);
+	delete new_carried;
 }
 };

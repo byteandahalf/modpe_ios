@@ -48,5 +48,6 @@ extern void (*PlayerInventoryProxy$replaceSlot)(PlayerInventoryProxy*, int, cons
 extern void (*PlayerInventoryProxy$clearSlot)(PlayerInventoryProxy*, int, int);
 extern Item* (*Item$Item)(Item*, const std::string&, short);
 extern ItemInstance* (*ItemInstance$fromItem)(ItemInstance*, Item*);
+extern void (*ItemInstance$operator_equals)(ItemInstance*, const ItemInstance&);
 
 #endif

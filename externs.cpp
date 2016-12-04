@@ -49,3 +49,4 @@ void (*PlayerInventoryProxy$replaceSlot)(PlayerInventoryProxy*, int, const ItemI
 void (*PlayerInventoryProxy$clearSlot)(PlayerInventoryProxy*, int, int);
 Item* (*Item$Item)(Item*, const std::string&, short);
 ItemInstance* (*ItemInstance$fromItem)(ItemInstance*, Item*);
+void (*ItemInstance$operator_equals)(ItemInstance*, const ItemInstance&);

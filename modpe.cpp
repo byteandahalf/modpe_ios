@@ -67,6 +67,8 @@ namespace LevelNS
 //Entity
 namespace EntityNS
 {
+	void getEntityTypeId(CScriptVar*, void*);
+	void remove(CScriptVar*, void*);
 	void getVelX(CScriptVar*, void*);
 	void getVelY(CScriptVar*, void*);
 	void getVelZ(CScriptVar*, void*);
@@ -78,6 +80,9 @@ namespace EntityNS
 	void getPosZ(CScriptVar*, void*);
 	void setPosition(CScriptVar*, void*);
 	void setPositionRelative(CScriptVar*, void*);
+	void setFireTicks(CScriptVar*, void*);
+	void rideAnimal(CScriptVar*, void*);
+	void setCarriedItem(CScriptVar*, void*);
 };
 //Player
 namespace PlayerNS
@@ -103,6 +108,7 @@ namespace ModPENS
 namespace ItemNS
 {
 	void setMaxStackSize(CScriptVar*, void*);
+	void getMaxStackSize(CScriptVar*, void*);
 }
 
 void ModPE_initScripts()
@@ -164,6 +170,8 @@ void registerScriptCalls()
 	interpreter->addNative("function Level.getTime()", LevelNS::getTime, interpreter);
 	interpreter->addNative("function Level.setTime(time)", LevelNS::setTime, interpreter);
 
+	interpreter->addNative("function Entity.getEntityTypeId(uniqueID)", EntityNS::getEntityTypeId, interpreter);
+	interpreter->addNative("function Entity.remove(uniqueID)", EntityNS::remove, interpreter);
 	interpreter->addNative("function Entity.getX(uniqueID)", EntityNS::getPosX, interpreter);
 	interpreter->addNative("function Entity.getY(uniqueID)", EntityNS::getPosY, interpreter);
 	interpreter->addNative("function Entity.getZ(uniqueID)", EntityNS::getPosZ, interpreter);
@@ -175,6 +183,9 @@ void registerScriptCalls()
 	interpreter->addNative("function Entity.setVelX(uniqueID, velocity)", EntityNS::setVelX, interpreter);
 	interpreter->addNative("function Entity.setVelY(uniqueID, velocity)", EntityNS::setVelY, interpreter);
 	interpreter->addNative("function Entity.setVelZ(uniqueID, velocity)", EntityNS::setVelZ, interpreter);
+	interpreter->addNative("function Entity.setFireTicks(uniqueID, ticks)", EntityNS::setFireTicks, interpreter);
+	interpreter->addNative("function Entity.rideAnimal(rider, ride)", EntityNS::rideAnimal, interpreter);
+	interpreter->addNative("function Entity.setCarriedItem(uniqueID, itemId, count, aux)", EntityNS::setCarriedItem, interpreter);
 
 	interpreter->addNative("function Player.getEntity()", PlayerNS::getEntity, interpreter);
 	interpreter->addNative("function Player.clearInventorySlot(slotId)", PlayerNS::clearInventorySlot, interpreter);
@@ -191,6 +202,7 @@ void registerScriptCalls()
 	interpreter->addNative("function ModPE.setItem(itemId, icon_name, icon_index, name, stackSize)", ModPENS::setItem, interpreter);
 
 	interpreter->addNative("function Item.setMaxStackSize(itemId, stackSize)", ItemNS::setMaxStackSize, interpreter);
+	interpreter->addNative("function Item.getMaxStackSize(itemId)", ItemNS::getMaxStackSize, interpreter);
 }
 
 
@@ -214,6 +226,7 @@ void initPointers()
 	FLHookSymbol(PlayerInventoryProxy$clearSlot, FLAddress(0x00000000 | 1, 0x10071665c));
 	FLHookSymbol(Item$Item, FLAddress(0x00000000 | 1, 0x10074689c));
 	FLHookSymbol(ItemInstance$fromItem, FLAddress(0x00000000 | 1, 0x1007568e8));
+	FLHookSymbol(ItemInstance$operator_equals, FLAddress(0x00000000 | 1, 0x100757b68));
 
 	FLHookSymbol(Item$mItems, FLAddress(0x00000000, 0x1012ae238));
 

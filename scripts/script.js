@@ -2,21 +2,16 @@
 
 function useItem(x, y, z, itemId, blockId, side, itemData, blockData)
 {
-	Item.setMaxStackSize(3, 1);
+	clientMessage(Item.getMaxStackSize(3));
+	Item.setMaxStackSize(3, 12);
+	clientMessage(Item.getMaxStackSize(3));
 	//Player.setInventorySlot(Player.getSelectedSlotId(), 256, 31, 0);
 }
 
+var victim1 = 0;
 function attackHook(attacker, victim)
 {
-	if(Player.getCarriedItem() == 19 && Player.getInventorySlotData(Player.getSelectedSlotId()) == 1)
-	{
-		Player.clearInventorySlot(Player.getSelectedSlotId());
-		clientMessage("Wet sponge!");
-	}
-	clientMessage("Dude.");
-	Entity.setVelX(victim, 3.0);
-	Entity.setPositionRelative(attacker, 1, 1, 1);
-	Player.setInventorySlot(Player.getSelectedSlotId(), 256, 30, 100);
+	Entity.setCarriedItem(victim, 2, 1, 0);
 }
 
 var timer = 300;
