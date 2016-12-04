@@ -20,6 +20,7 @@ struct Item;
 struct ItemInstance;
 struct InventorySlot;
 struct TextureAtlas;
+struct BlockEntity;
 
 extern CTinyJS* interpreter;
 
@@ -29,6 +30,8 @@ extern bool SCRIPTS_NEED_INIT;
 
 extern LocalPlayer* MCPE_localplayer;
 extern MinecraftClient* MCPE_client;
+extern uintptr_t** FurnaceBlockEntity$vtable;
+extern uintptr_t** ChestBlockEntity$vtable;
 extern uintptr_t** CreativeMode$vtable;
 extern uintptr_t** SurvivalMode$vtable;
 extern Item** Item$mItems;
@@ -36,6 +39,7 @@ extern Item** Item$mItems;
 extern void (*Level$explode)(Level*, BlockSource*, Entity*, const Vec3&, float, bool, bool, float);
 extern bool (*BlockSource$setBlockAndData)(BlockSource*, int, int, int, FullBlock, int);
 extern FullBlock (*BlockSource$getBlockAndData)(BlockSource*, const BlockPos&);
+extern BlockEntity* (*BlockSource$getBlockEntity)(BlockSource*, const BlockPos&);
 extern uint64_t& (*Entity$getUniqueID)(Entity*);
 extern Entity* (*Level$fetchEntity)(Level*, uint64_t, bool);
 extern void (*GuiData$addMessage)(GuiData*, const std::string&, const std::string&, int, bool);

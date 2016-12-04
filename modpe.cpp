@@ -63,6 +63,14 @@ namespace LevelNS
 	void setGameMode(CScriptVar*, void*);
 	void getTime(CScriptVar*, void*);
 	void setTime(CScriptVar*, void*);
+	void setChestSlot(CScriptVar*, void*);
+	void getChestSlot(CScriptVar*, void*);
+	void getChestSlotCount(CScriptVar*, void*);
+	void getChestSlotData(CScriptVar*, void*);
+	void setFurnaceSlot(CScriptVar*, void*);
+	void getFurnaceSlot(CScriptVar*, void*);
+	void getFurnaceSlotCount(CScriptVar*, void*);
+	void getFurnaceSlotData(CScriptVar*, void*);
 };
 //Entity
 namespace EntityNS
@@ -169,6 +177,14 @@ void registerScriptCalls()
 	//interpreter->addNative("function Level.setGameMode(gamemode)", LevelNS::setGameMode, interpreter);
 	interpreter->addNative("function Level.getTime()", LevelNS::getTime, interpreter);
 	interpreter->addNative("function Level.setTime(time)", LevelNS::setTime, interpreter);
+	interpreter->addNative("function Level.setChestSlot(x, y, z, slot, itemId, count, aux)", LevelNS::setChestSlot, interpreter);
+	interpreter->addNative("function Level.getChestSlot(x, y, z, slot)", LevelNS::getChestSlot, interpreter);
+	interpreter->addNative("function Level.getChestSlotCount(x, y, z, slot)", LevelNS::getChestSlotCount, interpreter);
+	interpreter->addNative("function Level.getChestSlotData(x, y, z, slot)", LevelNS::getChestSlotData, interpreter);
+	interpreter->addNative("function Level.setFurnaceSlot(x, y, z, slot, itemId, count, aux)", LevelNS::setFurnaceSlot, interpreter);
+	interpreter->addNative("function Level.getFurnaceSlot(x, y, z, slot)", LevelNS::getFurnaceSlot, interpreter);
+	interpreter->addNative("function Level.getFurnaceSlotCount(x, y, z, slot)", LevelNS::getFurnaceSlotCount, interpreter);
+	interpreter->addNative("function Level.getFurnaceSlotData(x, y, z, slot)", LevelNS::getFurnaceSlotData, interpreter);
 
 	interpreter->addNative("function Entity.getEntityTypeId(uniqueID)", EntityNS::getEntityTypeId, interpreter);
 	interpreter->addNative("function Entity.remove(uniqueID)", EntityNS::remove, interpreter);
@@ -214,6 +230,7 @@ void initPointers()
 	FLHookSymbol(Level$explode, FLAddress(0x00000000 | 1, 0x1007a9118));
 	FLHookSymbol(BlockSource$setBlockAndData, FLAddress(0x00000000 | 1, 0x10079bc80));
 	FLHookSymbol(BlockSource$getBlockAndData, FLAddress(0x00000000 | 1, 0x10079a1fc));
+	FLHookSymbol(BlockSource$getBlockEntity, FLAddress(0x00000000 | 1, 0x10079c080));
 	FLHookSymbol(Entity$getUniqueID, FLAddress(0x00000000 | 1, 0x100657960));
 	FLHookSymbol(Level$fetchEntity, FLAddress(0x00000000 | 1, 0x1007a8920));
 	FLHookSymbol(GuiData$addMessage, FLAddress(0x00000000 | 1, 0x100108428));
@@ -237,6 +254,8 @@ void initPointers()
 	//0x1012ae210 Item::mItemLookupMap
 	//0x10074dc34 map<std::string, std::pair<const std::string, std::unique_ptr<Item>>>::operator[](const std::string&)
 
+	FLHookSymbol(FurnaceBlockEntity$vtable, FLAddress(0x00000000, 0x1011632c8));
+	FLHookSymbol(ChestBlockEntity$vtable, FLAddress(0x00000000, 0x101162a38));
 	FLHookSymbol(CreativeMode$vtable, FLAddress(0x00000000, 0x1011D7C78));
 	FLHookSymbol(SurvivalMode$vtable, FLAddress(0x00000000, 0x10113DDC0));
 	VirtualHook(CreativeMode$vtable, GAMEMODE_USEITEMON_OFFSET, (void*) &CreativeMode$useItemOn, (void**) &_CreativeMode$useItemOn);

@@ -3,10 +3,11 @@
 #include "../externs.h"
 #include "../minecraftpe/common.h"
 #include "../minecraftpe/Player.h"
+#include "../minecraftpe/ItemInstance.h"
 
 #include <string>
 
-std::string tostr64(uint64_t);
+uint64_t strToU64(const std::string&);
 ItemInstance* newItemInstance(int, uint8_t, uint16_t);
 
 

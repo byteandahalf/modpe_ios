@@ -2,10 +2,20 @@
 
 function useItem(x, y, z, itemId, blockId, side, itemData, blockData)
 {
-	clientMessage(Item.getMaxStackSize(3));
-	Item.setMaxStackSize(3, 12);
-	clientMessage(Item.getMaxStackSize(3));
-	//Player.setInventorySlot(Player.getSelectedSlotId(), 256, 31, 0);
+	if(blockId == 54)
+	{
+		clientMessage(Level.getChestSlot(x, y, z, 0));
+		clientMessage(Level.getChestSlotCount(x, y, z, 0));
+		clientMessage(Level.getChestSlotData(x, y, z, 0));
+		Level.setChestSlot(x, y, z, 0, 318, 34, 0);
+	}
+	if(blockId == 61)
+	{
+		clientMessage(Level.getFurnaceSlot(x, y, z, 0));
+		clientMessage(Level.getFurnaceSlotCount(x, y, z, 0));
+		clientMessage(Level.getFurnaceSlotData(x, y, z, 0));
+		Level.setFurnaceSlot(x, y, z, 0, 19, 16, 1);
+	}
 }
 
 var victim1 = 0;
