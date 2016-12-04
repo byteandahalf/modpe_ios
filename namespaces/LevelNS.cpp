@@ -120,20 +120,15 @@ void setChestSlot(CScriptVar* jsfunc, void*)
 		aux = jsfunc->getParameter("aux")->getInt();
 
 	BlockEntity* blockEntity = BlockSource$getBlockEntity(MCPE_localplayer->region, BlockPos{x, y, z});
-	if(blockEntity == NULL)
+	if(blockEntity == NULL || BlockEntity$getType(blockEntity) != 2)
 	{
 		return;
 	}
-	uintptr_t** vtable = *((uintptr_t***) blockEntity);
-	void (*setItem)(BlockEntity*, int, const ItemInstance*) = (void (*)(BlockEntity*, int, const ItemInstance*)) vtable[23];
+	void (*setItem)(BlockEntity*, int, const ItemInstance*) = (void (*)(BlockEntity*, int, const ItemInstance*))((uintptr_t***) blockEntity)[0][23];
 
-	// Check if this is a Chest by comparing vtables
-	if((uintptr_t)vtable == (uintptr_t)ChestBlockEntity$vtable)
-	{
-		const ItemInstance* itemStack = newItemInstance(itemId, count, aux);
-		setItem(blockEntity, slot, itemStack);
-		delete itemStack;
-	}
+	const ItemInstance* itemStack = newItemInstance(itemId, count, aux);
+	setItem(blockEntity, slot, itemStack);
+	delete itemStack;
 }
 void getChestSlot(CScriptVar* jsfunc, void*)
 {
@@ -142,16 +137,15 @@ void getChestSlot(CScriptVar* jsfunc, void*)
 		z = jsfunc->getParameter("z")->getInt();
 	int slot = jsfunc->getParameter("slot")->getInt();
 	BlockEntity* blockEntity = BlockSource$getBlockEntity(MCPE_localplayer->region, BlockPos{x, y, z});
-	if(blockEntity == NULL)
+	if(blockEntity == NULL || BlockEntity$getType(blockEntity) != 2)
 	{
 		return;
 	}
-	uintptr_t** vtable = *((uintptr_t***) blockEntity);
-	const ItemInstance* (*getItem)(BlockEntity*, int) = (const ItemInstance* (*)(BlockEntity*, int)) vtable[22];
+	const ItemInstance* (*getItem)(BlockEntity*, int) = (const ItemInstance* (*)(BlockEntity*, int))((uintptr_t***) blockEntity)[0][22];
 	const ItemInstance* itemStack = getItem(blockEntity, slot);
 
 	int retval = 0;
-	if((uintptr_t)vtable == (uintptr_t)ChestBlockEntity$vtable && itemStack != NULL && itemStack->item != NULL)
+	if(itemStack != NULL && itemStack->item != NULL)
 	{
 		retval = itemStack->item->itemId;
 	}
@@ -165,16 +159,15 @@ void getChestSlotCount(CScriptVar* jsfunc, void*)
 		z = jsfunc->getParameter("z")->getInt();
 	int slot = jsfunc->getParameter("slot")->getInt();
 	BlockEntity* blockEntity = BlockSource$getBlockEntity(MCPE_localplayer->region, BlockPos{x, y, z});
-	if(blockEntity == NULL)
+	if(blockEntity == NULL || BlockEntity$getType(blockEntity) != 2)
 	{
 		return;
 	}
-	uintptr_t** vtable = *((uintptr_t***) blockEntity);
-	const ItemInstance* (*getItem)(BlockEntity*, int) = (const ItemInstance* (*)(BlockEntity*, int)) vtable[22];
+	const ItemInstance* (*getItem)(BlockEntity*, int) = (const ItemInstance* (*)(BlockEntity*, int))((uintptr_t***) blockEntity)[0][22];
 	const ItemInstance* itemStack = getItem(blockEntity, slot);
 
 	int retval = 0;
-	if((uintptr_t)vtable == (uintptr_t)ChestBlockEntity$vtable && itemStack != NULL)
+	if(itemStack != NULL)
 	{
 		retval = itemStack->count;
 	}
@@ -188,16 +181,15 @@ void getChestSlotData(CScriptVar* jsfunc, void*)
 		z = jsfunc->getParameter("z")->getInt();
 	int slot = jsfunc->getParameter("slot")->getInt();
 	BlockEntity* blockEntity = BlockSource$getBlockEntity(MCPE_localplayer->region, BlockPos{x, y, z});
-	if(blockEntity == NULL)
+	if(blockEntity == NULL || BlockEntity$getType(blockEntity) != 2)
 	{
 		return;
 	}
-	uintptr_t** vtable = *((uintptr_t***) blockEntity);
-	const ItemInstance* (*getItem)(BlockEntity*, int) = (const ItemInstance* (*)(BlockEntity*, int)) vtable[22];
+	const ItemInstance* (*getItem)(BlockEntity*, int) = (const ItemInstance* (*)(BlockEntity*, int))((uintptr_t***) blockEntity)[0][22];
 	const ItemInstance* itemStack = getItem(blockEntity, slot);
 
 	int retval = 0;
-	if((uintptr_t)vtable == (uintptr_t)ChestBlockEntity$vtable && itemStack != NULL)
+	if(itemStack != NULL)
 	{
 		retval = itemStack->aux;
 	}
@@ -215,20 +207,15 @@ void setFurnaceSlot(CScriptVar* jsfunc, void*)
 		aux = jsfunc->getParameter("aux")->getInt();
 
 	BlockEntity* blockEntity = BlockSource$getBlockEntity(MCPE_localplayer->region, BlockPos{x, y, z});
-	if(blockEntity == NULL)
+	if(blockEntity == NULL || BlockEntity$getType(blockEntity) != 1)
 	{
 		return;
 	}
-	uintptr_t** vtable = *((uintptr_t***) blockEntity);
-	void (*setItem)(BlockEntity*, int, const ItemInstance*) = (void (*)(BlockEntity*, int, const ItemInstance*)) vtable[20];
+	void (*setItem)(BlockEntity*, int, const ItemInstance*) = (void (*)(BlockEntity*, int, const ItemInstance*))((uintptr_t***) blockEntity)[0][20];
 
-	// Check if this is a Furnace by comparing vtables
-	if((uintptr_t)vtable == (uintptr_t)FurnaceBlockEntity$vtable)
-	{
-		const ItemInstance* itemStack = newItemInstance(itemId, count, aux);
-		setItem(blockEntity, slot, itemStack);
-		delete itemStack;
-	}
+	const ItemInstance* itemStack = newItemInstance(itemId, count, aux);
+	setItem(blockEntity, slot, itemStack);
+	delete itemStack;
 }
 void getFurnaceSlot(CScriptVar* jsfunc, void*)
 {
@@ -237,16 +224,15 @@ void getFurnaceSlot(CScriptVar* jsfunc, void*)
 		z = jsfunc->getParameter("z")->getInt();
 	int slot = jsfunc->getParameter("slot")->getInt();
 	BlockEntity* blockEntity = BlockSource$getBlockEntity(MCPE_localplayer->region, BlockPos{x, y, z});
-	if(blockEntity == NULL)
+	if(blockEntity == NULL || BlockEntity$getType(blockEntity) != 1)
 	{
 		return;
 	}
-	uintptr_t** vtable = *((uintptr_t***) blockEntity);
-	const ItemInstance* (*getItem)(BlockEntity*, int) = (const ItemInstance* (*)(BlockEntity*, int)) vtable[19];
+	const ItemInstance* (*getItem)(BlockEntity*, int) = (const ItemInstance* (*)(BlockEntity*, int))((uintptr_t***) blockEntity)[0][19];
 	const ItemInstance* itemStack = getItem(blockEntity, slot);
 
 	int retval = 0;
-	if((uintptr_t)vtable == (uintptr_t)FurnaceBlockEntity$vtable && itemStack != NULL && itemStack->item != NULL)
+	if(itemStack != NULL && itemStack->item != NULL)
 	{
 		retval = itemStack->item->itemId;
 	}
@@ -260,16 +246,15 @@ void getFurnaceSlotCount(CScriptVar* jsfunc, void*)
 		z = jsfunc->getParameter("z")->getInt();
 	int slot = jsfunc->getParameter("slot")->getInt();
 	BlockEntity* blockEntity = BlockSource$getBlockEntity(MCPE_localplayer->region, BlockPos{x, y, z});
-	if(blockEntity == NULL)
+	if(blockEntity == NULL || BlockEntity$getType(blockEntity) != 1)
 	{
 		return;
 	}
-	uintptr_t** vtable = *((uintptr_t***) blockEntity);
-	const ItemInstance* (*getItem)(BlockEntity*, int) = (const ItemInstance* (*)(BlockEntity*, int)) vtable[19];
+	const ItemInstance* (*getItem)(BlockEntity*, int) = (const ItemInstance* (*)(BlockEntity*, int))((uintptr_t***) blockEntity)[0][19];
 	const ItemInstance* itemStack = getItem(blockEntity, slot);
 
 	int retval = 0;
-	if((uintptr_t)vtable == (uintptr_t)FurnaceBlockEntity$vtable && itemStack != NULL)
+	if(itemStack != NULL)
 	{
 		retval = itemStack->count;
 	}
@@ -283,20 +268,50 @@ void getFurnaceSlotData(CScriptVar* jsfunc, void*)
 		z = jsfunc->getParameter("z")->getInt();
 	int slot = jsfunc->getParameter("slot")->getInt();
 	BlockEntity* blockEntity = BlockSource$getBlockEntity(MCPE_localplayer->region, BlockPos{x, y, z});
-	if(blockEntity == NULL)
+	if(blockEntity == NULL || BlockEntity$getType(blockEntity) != 1)
 	{
 		return;
 	}
-	uintptr_t** vtable = *((uintptr_t***) blockEntity);
-	const ItemInstance* (*getItem)(BlockEntity*, int) = (const ItemInstance* (*)(BlockEntity*, int)) vtable[19];
+	const ItemInstance* (*getItem)(BlockEntity*, int) = (const ItemInstance* (*)(BlockEntity*, int))((uintptr_t***) blockEntity)[0][19];
 	const ItemInstance* itemStack = getItem(blockEntity, slot);
 
 	int retval = 0;
-	if((uintptr_t)vtable == (uintptr_t)FurnaceBlockEntity$vtable && itemStack != NULL)
+	if(itemStack != NULL)
 	{
 		retval = itemStack->aux;
 	}
 
 	jsfunc->setReturnVar(new CScriptVar(retval));
+}
+void setSignText(CScriptVar* jsfunc, void*)
+{
+	int x = jsfunc->getParameter("x")->getInt(),
+		y = jsfunc->getParameter("y")->getInt(),
+		z = jsfunc->getParameter("z")->getInt();
+	int line = jsfunc->getParameter("line")->getInt();
+	const std::string& text = jsfunc->getParameter("text")->getString();
+
+	BlockEntity* signEntity = BlockSource$getBlockEntity(MCPE_localplayer->region, BlockPos{x, y, z});
+	if(signEntity == NULL || BlockEntity$getType(signEntity) != 4)
+	{
+		return;
+	}
+
+	SignBlockEntity$setMessage(signEntity, text, line);
+}
+void getSignText(CScriptVar* jsfunc, void*)
+{
+	int x = jsfunc->getParameter("x")->getInt(),
+		y = jsfunc->getParameter("y")->getInt(),
+		z = jsfunc->getParameter("z")->getInt();
+	int line = jsfunc->getParameter("line")->getInt();
+
+	BlockEntity* signEntity = BlockSource$getBlockEntity(MCPE_localplayer->region, BlockPos{x, y, z});
+	if(signEntity == NULL || BlockEntity$getType(signEntity) != 4)
+	{
+		return;
+	}
+
+	jsfunc->setReturnVar(new CScriptVar(SignBlockEntity$getMessage(signEntity, line)));
 }
 };

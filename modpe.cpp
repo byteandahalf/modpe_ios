@@ -71,6 +71,8 @@ namespace LevelNS
 	void getFurnaceSlot(CScriptVar*, void*);
 	void getFurnaceSlotCount(CScriptVar*, void*);
 	void getFurnaceSlotData(CScriptVar*, void*);
+	void setSignText(CScriptVar*, void*);
+	void getSignText(CScriptVar*, void*);
 };
 //Entity
 namespace EntityNS
@@ -185,6 +187,8 @@ void registerScriptCalls()
 	interpreter->addNative("function Level.getFurnaceSlot(x, y, z, slot)", LevelNS::getFurnaceSlot, interpreter);
 	interpreter->addNative("function Level.getFurnaceSlotCount(x, y, z, slot)", LevelNS::getFurnaceSlotCount, interpreter);
 	interpreter->addNative("function Level.getFurnaceSlotData(x, y, z, slot)", LevelNS::getFurnaceSlotData, interpreter);
+	interpreter->addNative("function Level.setSignText(x, y, z, line, text)", LevelNS::setSignText, interpreter);
+	interpreter->addNative("function Level.getSignText(x, y, z, line)", LevelNS::getSignText, interpreter);
 
 	interpreter->addNative("function Entity.getEntityTypeId(uniqueID)", EntityNS::getEntityTypeId, interpreter);
 	interpreter->addNative("function Entity.remove(uniqueID)", EntityNS::remove, interpreter);
@@ -244,6 +248,9 @@ void initPointers()
 	FLHookSymbol(Item$Item, FLAddress(0x00000000 | 1, 0x10074689c));
 	FLHookSymbol(ItemInstance$fromItem, FLAddress(0x00000000 | 1, 0x1007568e8));
 	FLHookSymbol(ItemInstance$operator_equals, FLAddress(0x00000000 | 1, 0x100757b68));
+	FLHookSymbol(SignBlockEntity$getMessage, FLAddress(0x00000000 | 1, 0x1008430c4));
+	FLHookSymbol(SignBlockEntity$setMessage, FLAddress(0x00000000 | 1, 0x1008430d8));
+	FLHookSymbol(BlockEntity$getType, FLAddress(0x00000000 | 1, 0x10083054c));
 
 	FLHookSymbol(Item$mItems, FLAddress(0x00000000, 0x1012ae238));
 
@@ -254,8 +261,6 @@ void initPointers()
 	//0x1012ae210 Item::mItemLookupMap
 	//0x10074dc34 map<std::string, std::pair<const std::string, std::unique_ptr<Item>>>::operator[](const std::string&)
 
-	FLHookSymbol(FurnaceBlockEntity$vtable, FLAddress(0x00000000, 0x1011632c8));
-	FLHookSymbol(ChestBlockEntity$vtable, FLAddress(0x00000000, 0x101162a38));
 	FLHookSymbol(CreativeMode$vtable, FLAddress(0x00000000, 0x1011D7C78));
 	FLHookSymbol(SurvivalMode$vtable, FLAddress(0x00000000, 0x10113DDC0));
 	VirtualHook(CreativeMode$vtable, GAMEMODE_USEITEMON_OFFSET, (void*) &CreativeMode$useItemOn, (void**) &_CreativeMode$useItemOn);

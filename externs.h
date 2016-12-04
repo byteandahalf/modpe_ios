@@ -30,8 +30,6 @@ extern bool SCRIPTS_NEED_INIT;
 
 extern LocalPlayer* MCPE_localplayer;
 extern MinecraftClient* MCPE_client;
-extern uintptr_t** FurnaceBlockEntity$vtable;
-extern uintptr_t** ChestBlockEntity$vtable;
 extern uintptr_t** CreativeMode$vtable;
 extern uintptr_t** SurvivalMode$vtable;
 extern Item** Item$mItems;
@@ -53,5 +51,8 @@ extern void (*PlayerInventoryProxy$clearSlot)(PlayerInventoryProxy*, int, int);
 extern Item* (*Item$Item)(Item*, const std::string&, short);
 extern ItemInstance* (*ItemInstance$fromItem)(ItemInstance*, Item*);
 extern void (*ItemInstance$operator_equals)(ItemInstance*, const ItemInstance&);
+extern const std::string& (*SignBlockEntity$getMessage)(BlockEntity*, int);
+extern void (*SignBlockEntity$setMessage)(BlockEntity*, const std::string&, int);
+extern int& (*BlockEntity$getType)(BlockEntity*);
 
 #endif

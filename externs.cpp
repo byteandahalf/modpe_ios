@@ -30,8 +30,6 @@ bool SCRIPTS_NEED_INIT;
 //pointers
 LocalPlayer* MCPE_localplayer;
 MinecraftClient* MCPE_client;
-uintptr_t** FurnaceBlockEntity$vtable;
-uintptr_t** ChestBlockEntity$vtable;
 uintptr_t** CreativeMode$vtable;
 uintptr_t** SurvivalMode$vtable;
 Item** Item$mItems;
@@ -54,3 +52,6 @@ void (*PlayerInventoryProxy$clearSlot)(PlayerInventoryProxy*, int, int);
 Item* (*Item$Item)(Item*, const std::string&, short);
 ItemInstance* (*ItemInstance$fromItem)(ItemInstance*, Item*);
 void (*ItemInstance$operator_equals)(ItemInstance*, const ItemInstance&);
+const std::string& (*SignBlockEntity$getMessage)(BlockEntity*, int);
+void (*SignBlockEntity$setMessage)(BlockEntity*, const std::string&, int);
+int& (*BlockEntity$getType)(BlockEntity*);
