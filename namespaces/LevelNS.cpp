@@ -7,8 +7,6 @@
 #include "../minecraftpe/ItemInstance.h"
 #include "../minecraftpe/Item.h"
 
-#include "../minecraftpe/MinecraftClient.h"
-
 ItemInstance* newItemInstance(int, uint8_t, uint16_t);
 
 namespace LevelNS
