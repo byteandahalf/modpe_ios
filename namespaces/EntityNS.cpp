@@ -9,17 +9,7 @@
 
 uint64_t strToU64(const std::string&);
 ItemInstance* newItemInstance(int, uint8_t, uint16_t);
-
-
-Entity* modpe_entityWrapper(uint64_t uniqueID)
-{
-	Entity* retval = Level$fetchEntity(MCPE_localplayer->level, uniqueID, false);
-
-	if(!retval)
-		retval = MCPE_localplayer;
-
-	return retval;
-}
+Entity* EntityWrapper(uint64_t);
 
 bool canAddRider_hack()
 {
@@ -30,21 +20,21 @@ namespace EntityNS
 {
 void getEntityTypeId(CScriptVar* jsfunc, void*)
 {
-	Entity* entity = modpe_entityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
+	Entity* entity = EntityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
 	int (*getEntityTypeId)(Entity*) = (int (*)(Entity*))((uintptr_t***) entity)[0][97];
 
 	jsfunc->setReturnVar(new CScriptVar(getEntityTypeId(entity)));
 }
 void remove(CScriptVar* jsfunc, void*)
 {
-	Entity* entity = modpe_entityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
+	Entity* entity = EntityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
 
 	void (*remove)(Entity*) = (void (*)(Entity*))((uintptr_t***) entity)[0][8];
 	remove(entity);
 }
 void getVelX(CScriptVar* jsfunc, void*)
 {
-	Entity* entity = modpe_entityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
+	Entity* entity = EntityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
 
 	// use vtable pointers since they aren't guaranteed to change across updates
 	uintptr_t** vtable = *((uintptr_t***) entity);
@@ -54,7 +44,7 @@ void getVelX(CScriptVar* jsfunc, void*)
 }
 void getVelY(CScriptVar* jsfunc, void*)
 {
-	Entity* entity = modpe_entityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
+	Entity* entity = EntityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
 
 	uintptr_t** vtable = *((uintptr_t***) entity);
 	const Vec3& (*getVelocity)(Entity*) = (const Vec3& (*)(Entity*)) vtable[13];
@@ -63,7 +53,7 @@ void getVelY(CScriptVar* jsfunc, void*)
 }
 void getVelZ(CScriptVar* jsfunc, void*)
 {
-	Entity* entity = modpe_entityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
+	Entity* entity = EntityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
 
 	uintptr_t** vtable = *((uintptr_t***) entity);
 	const Vec3& (*getVelocity)(Entity*) = (const Vec3& (*)(Entity*)) vtable[13];
@@ -72,7 +62,7 @@ void getVelZ(CScriptVar* jsfunc, void*)
 }
 void setVelX(CScriptVar* jsfunc, void*)
 {
-	Entity* entity = modpe_entityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
+	Entity* entity = EntityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
 
 	uintptr_t** vtable = *((uintptr_t***) entity);
 	const Vec3& (*getVelocity)(Entity*) = (const Vec3& (*)(Entity*)) vtable[13];
@@ -86,7 +76,7 @@ void setVelX(CScriptVar* jsfunc, void*)
 }
 void setVelY(CScriptVar* jsfunc, void*)
 {
-	Entity* entity = modpe_entityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
+	Entity* entity = EntityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
 
 	uintptr_t** vtable = *((uintptr_t***) entity);
 	const Vec3& (*getVelocity)(Entity*) = (const Vec3& (*)(Entity*)) vtable[13];
@@ -100,7 +90,7 @@ void setVelY(CScriptVar* jsfunc, void*)
 }
 void setVelZ(CScriptVar* jsfunc, void*)
 {
-	Entity* entity = modpe_entityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
+	Entity* entity = EntityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
 
 	uintptr_t** vtable = *((uintptr_t***) entity);
 	const Vec3& (*getVelocity)(Entity*) = (const Vec3& (*)(Entity*)) vtable[13];
@@ -115,7 +105,7 @@ void setVelZ(CScriptVar* jsfunc, void*)
 
 void getPosX(CScriptVar* jsfunc, void*)
 {
-	Entity* entity = modpe_entityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
+	Entity* entity = EntityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
 
 	uintptr_t** vtable = *((uintptr_t***) entity);
 	const Vec3& (*getPos)(Entity*) = (const Vec3& (*)(Entity*)) vtable[10];
@@ -124,7 +114,7 @@ void getPosX(CScriptVar* jsfunc, void*)
 }
 void getPosY(CScriptVar* jsfunc, void*)
 {
-	Entity* entity = modpe_entityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
+	Entity* entity = EntityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
 
 	uintptr_t** vtable = *((uintptr_t***) entity);
 	const Vec3& (*getPos)(Entity*) = (const Vec3& (*)(Entity*)) vtable[10];
@@ -133,7 +123,7 @@ void getPosY(CScriptVar* jsfunc, void*)
 }
 void getPosZ(CScriptVar* jsfunc, void*)
 {
-	Entity* entity = modpe_entityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
+	Entity* entity = EntityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
 
 	uintptr_t** vtable = *((uintptr_t***) entity);
 	const Vec3& (*getPos)(Entity*) = (const Vec3& (*)(Entity*)) vtable[10];
@@ -142,7 +132,7 @@ void getPosZ(CScriptVar* jsfunc, void*)
 }
 void setPosition(CScriptVar* jsfunc, void*)
 {
-	Entity* entity = modpe_entityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
+	Entity* entity = EntityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
 
 	uintptr_t** vtable = *((uintptr_t***) entity);
 	void (*setPos)(Entity*, const Vec3&) = (void (*)(Entity*, const Vec3&)) vtable[9];
@@ -155,7 +145,7 @@ void setPosition(CScriptVar* jsfunc, void*)
 }
 void setPositionRelative(CScriptVar* jsfunc, void*)
 {
-	Entity* entity = modpe_entityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
+	Entity* entity = EntityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
 
 	uintptr_t** vtable = *((uintptr_t***) entity);
 	void (*setPos)(Entity*, const Vec3&) = (void (*)(Entity*, const Vec3&)) vtable[9];
@@ -169,7 +159,7 @@ void setPositionRelative(CScriptVar* jsfunc, void*)
 }
 void setFireTicks(CScriptVar* jsfunc, void*)
 {
-	Entity* entity = modpe_entityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
+	Entity* entity = EntityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
 	int ticks = jsfunc->getParameter("ticks")->getInt();
 
 	void (*setOnFire)(Entity*, int) = (void (*)(Entity*, int))((uintptr_t***) entity)[0][101];
@@ -177,8 +167,8 @@ void setFireTicks(CScriptVar* jsfunc, void*)
 }
 void rideAnimal(CScriptVar* jsfunc, void*)
 {
-	Entity* rider = modpe_entityWrapper(strToU64(jsfunc->getParameter("rider")->getString()));
-	Entity* ride = modpe_entityWrapper(strToU64(jsfunc->getParameter("ride")->getString()));
+	Entity* rider = EntityWrapper(strToU64(jsfunc->getParameter("rider")->getString()));
+	Entity* ride = EntityWrapper(strToU64(jsfunc->getParameter("ride")->getString()));
 
 	void (*stopRiding)(Entity*, bool, bool) = (void (*)(Entity*, bool, bool))((uintptr_t***) rider)[0][120];
 	void (*startRiding)(Entity*, Entity*) = (void (*)(Entity*, Entity*))((uintptr_t***) rider)[0][26];
@@ -203,7 +193,7 @@ void setCarriedItem(CScriptVar* jsfunc, void*)
 		count = jsfunc->getParameter("count")->getInt(),
 		aux = jsfunc->getParameter("aux")->getInt();
 
-	Entity* entity = modpe_entityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
+	Entity* entity = EntityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
 	ItemInstance* (*getCarriedItem)(Entity*) = (ItemInstance* (*)(Entity*))((uintptr_t***) entity)[0][184];
 
 	ItemInstance* ptr_to_carried = getCarriedItem(entity);

@@ -73,8 +73,9 @@ namespace LevelNS
 	void getFurnaceSlotData(CScriptVar*, void*);
 	void setSignText(CScriptVar*, void*);
 	void getSignText(CScriptVar*, void*);
-	void addParticle(CScriptVar*, void*);
 	void playSound(CScriptVar*, void*);
+	void playSoundEnt(CScriptVar*, void*);
+	void addParticle(CScriptVar*, void*);
 };
 //Entity
 namespace EntityNS
@@ -191,8 +192,9 @@ void registerScriptCalls()
 	interpreter->addNative("function Level.getFurnaceSlotData(x, y, z, slot)", LevelNS::getFurnaceSlotData, interpreter);
 	interpreter->addNative("function Level.setSignText(x, y, z, line, text)", LevelNS::setSignText, interpreter);
 	interpreter->addNative("function Level.getSignText(x, y, z, line)", LevelNS::getSignText, interpreter);
-	interpreter->addNative("function Level.addParticle(particleName, x, y, z, velX, velY, velZ, scale)", LevelNS::addParticle, interpreter);
 	interpreter->addNative("function Level.playSound(x, y, z, soundName, volume, pitch)", LevelNS::playSound, interpreter);
+	interpreter->addNative("function Level.playSoundEnt(uniqueID, soundName, volume, pitch)", LevelNS::playSoundEnt, interpreter);
+	interpreter->addNative("function Level.addParticle(particleName, x, y, z, velX, velY, velZ, scale)", LevelNS::addParticle, interpreter);
 
 	interpreter->addNative("function Entity.getEntityTypeId(uniqueID)", EntityNS::getEntityTypeId, interpreter);
 	interpreter->addNative("function Entity.remove(uniqueID)", EntityNS::remove, interpreter);

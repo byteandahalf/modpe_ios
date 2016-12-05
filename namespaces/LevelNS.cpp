@@ -8,6 +8,8 @@
 #include "../minecraftpe/Item.h"
 
 ItemInstance* newItemInstance(int, uint8_t, uint16_t);
+uint64_t strToU64(const std::string&);
+Entity* EntityWrapper(uint64_t);
 
 namespace LevelNS
 {
@@ -324,6 +326,17 @@ void playSound(CScriptVar* jsfunc, void*)
 	const std::string& soundName = jsfunc->getParameter("soundName")->getString();
 
 	MinecraftClient$play(MCPE_client, soundName, Vec3{x, y, z}, volume, pitch);
+}
+void playSoundEnt(CScriptVar* jsfunc, void*)
+{
+	Entity* entity = EntityWrapper(strToU64(jsfunc->getParameter("uniqueID")->getString()));
+	const Vec3& (*getPos)(Entity*) = (const Vec3& (*)(Entity*))((uintptr_t***) entity)[0][10];
+
+	float 	volume =	static_cast<float>(jsfunc->getParameter("volume")->getDouble()),
+			pitch =		static_cast<float>(jsfunc->getParameter("pitch")->getDouble());
+	const std::string& soundName = jsfunc->getParameter("soundName")->getString();
+
+	MinecraftClient$play(MCPE_client, soundName, getPos(entity), volume, pitch);
 }
 void addParticle(CScriptVar* jsfunc, void*)
 {
