@@ -55,3 +55,6 @@ void (*ItemInstance$operator_equals)(ItemInstance*, const ItemInstance&);
 const std::string& (*SignBlockEntity$getMessage)(BlockEntity*, int);
 void (*SignBlockEntity$setMessage)(BlockEntity*, const std::string&, int);
 int& (*BlockEntity$getType)(BlockEntity*);
+void (*MinecraftClient$play)(MinecraftClient*, const std::string&, const Vec3&, float, float);
+void (*Level$addParticle)(Level*, int, const Vec3&, const Vec3&, int);
+int (*ParticleTypeFromString)(const std::string&);

@@ -13,11 +13,11 @@ namespace LevelNS
 {
 void explode(CScriptVar* jsfunc, void*)
 {
-	float x =		static_cast<float>(jsfunc->getParameter("x")->getInt()),
-		y = 		static_cast<float>(jsfunc->getParameter("y")->getInt()),
-		z = 		static_cast<float>(jsfunc->getParameter("z")->getInt()),
-		radius =	static_cast<float>(jsfunc->getParameter("radius")->getDouble()),
-		maxResistance =	static_cast<float>(jsfunc->getParameter("maxResistance")->getDouble());
+	float 	x =				static_cast<float>(jsfunc->getParameter("x")->getDouble()),
+			y =				static_cast<float>(jsfunc->getParameter("y")->getDouble()),
+			z =				static_cast<float>(jsfunc->getParameter("z")->getDouble()),
+			radius =		static_cast<float>(jsfunc->getParameter("radius")->getDouble()),
+			maxResistance =	static_cast<float>(jsfunc->getParameter("maxResistance")->getDouble());
 	bool makeFire = jsfunc->getParameter("makeFire")->getBool(),
 		destroyBlocks = jsfunc->getParameter("destroyBlocks")->getBool();
 
@@ -313,5 +313,29 @@ void getSignText(CScriptVar* jsfunc, void*)
 	}
 
 	jsfunc->setReturnVar(new CScriptVar(SignBlockEntity$getMessage(signEntity, line)));
+}
+void playSound(CScriptVar* jsfunc, void*)
+{
+	float 	x =			static_cast<float>(jsfunc->getParameter("x")->getDouble()),
+			y =			static_cast<float>(jsfunc->getParameter("y")->getDouble()),
+			z =			static_cast<float>(jsfunc->getParameter("z")->getDouble());
+	float 	volume =	static_cast<float>(jsfunc->getParameter("volume")->getDouble()),
+			pitch =		static_cast<float>(jsfunc->getParameter("pitch")->getDouble());
+	const std::string& soundName = jsfunc->getParameter("soundName")->getString();
+
+	MinecraftClient$play(MCPE_client, soundName, Vec3{x, y, z}, volume, pitch);
+}
+void addParticle(CScriptVar* jsfunc, void*)
+{
+	float 	x =			static_cast<float>(jsfunc->getParameter("x")->getDouble()),
+			y =			static_cast<float>(jsfunc->getParameter("y")->getDouble()),
+			z =			static_cast<float>(jsfunc->getParameter("z")->getDouble());
+	float 	velX =		static_cast<float>(jsfunc->getParameter("velX")->getDouble()),
+			velY =		static_cast<float>(jsfunc->getParameter("velY")->getDouble()),
+			velZ =		static_cast<float>(jsfunc->getParameter("velZ")->getDouble());
+	int scale = jsfunc->getParameter("scale")->getInt();
+	const std::string& particleName = jsfunc->getParameter("particleName")->getString();
+
+	Level$addParticle(MCPE_localplayer->level, ParticleTypeFromString(particleName), Vec3{x, y, z}, Vec3{velX, velY, velZ}, scale);
 }
 };

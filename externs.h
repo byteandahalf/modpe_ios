@@ -54,5 +54,8 @@ extern void (*ItemInstance$operator_equals)(ItemInstance*, const ItemInstance&);
 extern const std::string& (*SignBlockEntity$getMessage)(BlockEntity*, int);
 extern void (*SignBlockEntity$setMessage)(BlockEntity*, const std::string&, int);
 extern int& (*BlockEntity$getType)(BlockEntity*);
+extern void (*MinecraftClient$play)(MinecraftClient*, const std::string&, const Vec3&, float, float);
+extern void (*Level$addParticle)(Level*, int, const Vec3&, const Vec3&, int);
+extern int (*ParticleTypeFromString)(const std::string&);
 
 #endif

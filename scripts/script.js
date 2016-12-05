@@ -23,6 +23,8 @@ function useItem(x, y, z, itemId, blockId, side, itemData, blockData)
 		Level.setSignText(x, y, z, 2, "and getSignText");
 		Level.setSignText(x, y, z, 3, "now on iOS!");
 	}
+	Level.addParticle("portal", x, y, z, 0, 0, 0, 1);
+	Level.playSound(x, y, z, "piston.out", 1.0, 1.5);
 }
 
 var victim1 = 0;

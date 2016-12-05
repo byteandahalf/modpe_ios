@@ -73,6 +73,8 @@ namespace LevelNS
 	void getFurnaceSlotData(CScriptVar*, void*);
 	void setSignText(CScriptVar*, void*);
 	void getSignText(CScriptVar*, void*);
+	void addParticle(CScriptVar*, void*);
+	void playSound(CScriptVar*, void*);
 };
 //Entity
 namespace EntityNS
@@ -189,6 +191,8 @@ void registerScriptCalls()
 	interpreter->addNative("function Level.getFurnaceSlotData(x, y, z, slot)", LevelNS::getFurnaceSlotData, interpreter);
 	interpreter->addNative("function Level.setSignText(x, y, z, line, text)", LevelNS::setSignText, interpreter);
 	interpreter->addNative("function Level.getSignText(x, y, z, line)", LevelNS::getSignText, interpreter);
+	interpreter->addNative("function Level.addParticle(particleName, x, y, z, velX, velY, velZ, scale)", LevelNS::addParticle, interpreter);
+	interpreter->addNative("function Level.playSound(x, y, z, soundName, volume, pitch)", LevelNS::playSound, interpreter);
 
 	interpreter->addNative("function Entity.getEntityTypeId(uniqueID)", EntityNS::getEntityTypeId, interpreter);
 	interpreter->addNative("function Entity.remove(uniqueID)", EntityNS::remove, interpreter);
@@ -251,6 +255,9 @@ void initPointers()
 	FLHookSymbol(SignBlockEntity$getMessage, FLAddress(0x00000000 | 1, 0x1008430c4));
 	FLHookSymbol(SignBlockEntity$setMessage, FLAddress(0x00000000 | 1, 0x1008430d8));
 	FLHookSymbol(BlockEntity$getType, FLAddress(0x00000000 | 1, 0x10083054c));
+	FLHookSymbol(MinecraftClient$play, FLAddress(0x00000000 | 1, 0x100083818));
+	FLHookSymbol(Level$addParticle, FLAddress(0x00000000 | 1, 0x1007a7bec));
+	FLHookSymbol(ParticleTypeFromString, FLAddress(0x00000000 | 1, 0x1006ab270));
 
 	FLHookSymbol(Item$mItems, FLAddress(0x00000000, 0x1012ae238));
 
