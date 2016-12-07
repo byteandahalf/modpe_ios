@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include <Forklift/Forklift.h>
+#include <JavaScriptCore/JavaScript.h>
 
 #include "TinyJS.h"
 

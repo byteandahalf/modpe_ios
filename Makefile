@@ -1,141 +1,72 @@
-# Name of the project being built
-PROJECT := modpe
-
-# Name of process the tweak is loaded into
-PROCESS := minecraftpe
-
-# Local IP Address of device to SSH into
 DEVICE := ryans-ipod-touch.local
+TESTSCRIPT := script.js
+SCRIPTSDIR := /var/mobile/modpe/
 
-# Path of the SDK on MacOS
-SDKPATH := /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk
-
-# Build using libc++ and C++11 support
-# Unfortunately these build parameters are set up just for me :(
-override CXXFLAGS += -stdlib=libc++ -std=c++11 -miphoneos-version-min=7.0 -isysroot $(SDKPATH)
-override LDFLAGS += -stdlib=libc++ -std=c++11 -miphoneos-version-min=7.0 -isysroot $(SDKPATH)
-
-
-# Names of the tweak library, substrate filter, and debian package
-TWEAK := $(PROJECT).dylib
-FILTER := $(PROJECT).plist
+PROJECT := modpe
+DYLIB := $(PROJECT).dylib
+PLIST := $(PROJECT).plist
 DEB := $(PROJECT).deb
-# Directory for build products like executables, object files, and dependency files
+
 BUILD := build
-# Directory for debian package filesystem layout
-LAYOUT := layout
-# Directory for temporary staging of the debian package structure while creating the package
-STAGING := $(BUILD)/deb
-SUBSTRATE := $(STAGING)/Library/MobileSubstrate/DynamicLibraries
-# Name of the unstripped version
-UNSTRIPPED := $(BUILD)/$(TWEAK:.dylib=_unstripped.dylib)
-# List of source files and their corresponding object file paths
+STAGE := $(BUILD)/deb
+SUBSTRATE := $(STAGE)/Library/MobileSubstrate/DynamicLibraries
+SDK := /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk
+
 SRCS := $(shell find . -type f -name '*.cpp')
 OBJS := $(addprefix $(BUILD)/,$(SRCS:.cpp=.o))
-# Supported architectures
-ARCHS := arm64
-ARCHFLAGS := $(addprefix -arch ,$(ARCHS))
-# Frameworks for linking
-FRAMEWORKS := CydiaSubstrate Forklift
-override LDFLAGS += $(addprefix -framework ,$(FRAMEWORKS))
 
-# Compiler and linker
-CLANG := clang $(ARCHFLAGS)
-CLANGXX := clang++ $(ARCHFLAGS)
-CC := $(CLANG)
-CXX := $(CLANGXX)
-LD := $(CLANGXX)
-STRIP := strip
-
-# When invoked as "make VERBOSE=1", every command gets printed as it runs
-ifdef VERBOSE
-_v :=
-else
-_v := @
-endif
+ARCHS := -arch arm64
+FRAMEWORKS := -framework CydiaSubstrate -framework Forklift
+CXX := clang++ $(ARCHS)
+LD := $(CXX) $(FRAMEWORKS)
+override CXXFLAGS += -isysroot $(SDK) -stdlib=libc++ -std=c++11 -miphoneos-version-min=7.0
+override LDFLAGS += $(CXXFLAGS)
 
 
 ### Build rules ###
 
-all: $(TWEAK)
+all: $(DEB)
 
-.PHONY: all
+$(DYLIB): $(OBJS)
+	@$(LD) $(LDFLAGS) -dynamiclib -o $@ $^
 
-$(TWEAK): $(UNSTRIPPED)
-	@echo 'Strip $@'
-	$(_v)$(STRIP) -x -o $@ $<
-
-%.dylib: $(OBJS)
-	@echo 'Link $@'
-	$(_v)$(LD) $(LDFLAGS) -dynamiclib -o $@ $^
-
-%.cpp: $(BUILD)/%.d
-
-$(BUILD)/%.o: %.cpp | $(BUILD)/.dir
-	@echo 'Compile $@'
-	$(_v)$(CXX) $(CXXFLAGS) -MD -MF $(BUILD)/$*.d -c -o $@ $<
-
-.SECONDARY: $(BUILD)/.dir
-
--include $(BUILD)/*.d
-
-
-### Package rules ###
+$(BUILD)/%.o: %.cpp
+	@$(CXX) -c $(CXXFLAGS) $< -o $@
 
 package: $(DEB)
 
-.PHONY: package
-
-$(DEB): $(TWEAK) $(FILTER)
-	@echo 'Stage $@'
-	$(_v)rm -rf $(STAGING)
-	$(_v)mkdir -p $(STAGING)
-	$(_v)cp -R $(LAYOUT)/* $(STAGING)
-	$(_v)mkdir -p $(SUBSTRATE)
-	$(_v)cp $^ $(SUBSTRATE)
-	$(_v)chown -R root:wheel $(STAGING)
-	$(_v)chmod 0755 $(SUBSTRATE)/$(TWEAK)
-	$(_v)chmod 0644 $(SUBSTRATE)/$(FILTER)
-	@echo 'Package $@'
-	$(_v)dpkg-deb -Zgzip -b $(STAGING) $@
-	$(_v)rm -rf $(STAGING)
+$(DEB): $(DYLIB) $(PLIST)
+	@echo '$(PROJECT): Staging debian package'
+	-rm -rf $(STAGE)
+	-mkdir -p $(STAGE)
+	-cp -R layout/* $(BUILD)
+	-mkdir -p $(SUBSTRATE)
+	-cp $^ $(SUBSTRATE)
+	-dpkg-deb -Zgzip -b $(STAGE) $@
 
 
-### Install rules ###
+### Deploy rules ###
 
-install: $(DEB)
-	@echo 'Install $(DEB)'
-	scp $(DEB) root@$(DEVICE):/var/tmp/
-	@echo ‘Run dpkg -i /var/tmp/$(DEB) to install.’
-	ssh root@$(DEVICE)
+install-ssh: $(DEB)
+	@echo '$(PROJECT): Deploy via ssh'
+	-scp $< root@$(DEVICE):/var/tmp/
+	-ssh root@$(DEVICE)
 
-.PHONY: install
+deploy-ssh:
+	@echo '$(PROJECT): Deploy script via ssh'
+	-scp scripts/$(TESTSCRIPT) root@$(DEVICE):$(SCRIPTSDIR)
 
-### Offline install rules ###
+install-afc: $(DEB)
+	@echo '$(PROJECT): Offline deploy via afc'
+	-sudo afcclient put $< /$<
+	-sudo afcclient put scripts/$(TESTSCRIPT) /$(TESTSCRIPT)
 
-offline:
-	@echo 'No WiFi to SSH: Using afc instead'
-	$(_v)sudo afc/afcclient put ./modpe.deb /modpe.deb
-
-.PHONY: offline
 
 ### Clean rules ###
 
 clean:
-	@echo 'Remove $(BUILD)'
-	$(_v)rm -rf $(BUILD)
-
-.PHONY: clean
-
-
-### General rules ###
-
-%/.dir:
-	@echo 'Create directory $*/'
-	$(_v)mkdir -p $* && touch $@
-
-# deploys test script
-deploy: $(OFFLINE)
-	scp scripts/script.js root@$(DEVICE):/var/mobile/modpe/
-
-.PHONY: deploy
+	@echo '$(PROJECT): Clean build directory'
+	-rm -rf $(BUILD)/*
+	-mkdir -p $(STAGE)
+	-cp -R layout/* $(BUILD)
+	-rm $(DYLIB)
